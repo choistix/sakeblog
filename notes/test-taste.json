@@ -1,0 +1,28 @@
+{
+  "slug": "test-taste",
+  "type": "note",
+  "issue": 10,
+  "title_jp": "漢字",
+  "sake_name_jp": "漢字",
+  "sake_name_en": "sd",
+  "classification": "sad",
+  "brewery": "asd",
+  "prefecture": "dsa",
+  "region": "dsa",
+  "rice_variety": "dsadsa",
+  "seimaibuai": "",
+  "nihonshu_do": "4",
+  "acidity": 43,
+  "alcohol": "23",
+  "tasting_notes": "sdasdasdasd",
+  "sweetness": 52,
+  "umami": 32,
+  "finish": 53,
+  "pairing": "",
+  "image": null,
+  "kanji_bg": "酒",
+  "tags": [
+    "tokubetsu"
+  ],
+  "date": "2026-03-12T23:21:08.953Z"
+}
