@@ -1,0 +1,15 @@
+{
+  "slug": "trial",
+  "type": "index",
+  "issue": 7,
+  "title_jp": "This is a  漢字",
+  "title_en": "test subject",
+  "subtitle": "test subject",
+  "body": "trial and error",
+  "image": "assets/images/trial-MarkCPassport.jpg",
+  "kanji_bg": "酒",
+  "tags": [
+    "junmai"
+  ],
+  "date": "2026-03-12T23:12:47.222Z"
+}
