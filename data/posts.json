@@ -8,7 +8,7 @@
     "subtitle": "slknd",
     "body": "trying something new",
     "image": null,
-    "kanji_bg": "酒",
+    "kanji_bg": "é",
     "tags": [
       "daiginjo",
       "muroka"
@@ -177,35 +177,6 @@
     "issue": 7
   },
   {
-    "slug": "sake-food-pairing-guide",
-    "type": "index_row",
-    "date": "2024-03-05",
-    "title_jp": "éã¨æçã®ããªã¢ã¼ã¸ã¥",
-    "title_en": "Sake and Food Pairing: A Guide",
-    "subtitle": "How to match different styles of sake with dishes.",
-    "body": "Unlike wine, sakeâs savoury umami and low acidity allow it to complement a wide range of cuisines. Light, fragrant daiginjo pairs well with delicate sashimi, while rich junmai stands up to grilled meats and cheese.\n\nThis guide explores the basic principles: match flavour intensity, consider regional pairings, and experiment with contrasting elements.",
-    "image": null,
-    "kanji_bg": "é£",
-    "tags": [
-      "guide",
-      "pairing",
-      "education"
-    ],
-    "issue": 7
-  },
-  {
-    "slug": "dassai-45-the-gateway",
-    "type": "hero",
-    "date": "2024-03-01",
-    "title_jp": "çºç¥­ ååäº â å¥éã®ä¸æ¯",
-    "title_en": "Dassai 45 â The Gateway Pour",
-    "category": "Feature",
-    "issue": 7,
-    "kanji_bg": "çº",
-    "prefecture": "Yamaguchi",
-    "brewery": "Asahi Shuzo"
-  },
-  {
     "slug": "exploring-yamahai",
     "type": "index_row",
     "date": "2024-02-28",
@@ -221,60 +192,5 @@
       "complex"
     ],
     "issue": 7
-  },
-  {
-    "slug": "nabeshima-tokubetsu-junmai-note-049",
-    "type": "tasting_note",
-    "date": "2024-02-01",
-    "title_jp": "éå³¶ ç¹å¥ç´ç±³",
-    "title_en": "Nabeshima Tokubetsu Junmai",
-    "sake_name_jp": "éå³¶ ç¹å¥ç´ç±³",
-    "sake_name_en": "Nabeshima Tokubetsu Junmai",
-    "note_num": "Note #049",
-    "category": "Tasting Note",
-    "kanji_bg": "æ¨",
-    "prefecture": "Saga",
-    "brewery": "Fukuchiyo Shuzo"
-  },
-  {
-    "slug": "kubota-manju-note-048",
-    "type": "tasting_note",
-    "date": "2024-01-15",
-    "title_jp": "ä¹ä¿ç° è¬å¯¿",
-    "title_en": "Kubota Manju â \"Ten Thousand Longevities\"",
-    "sake_name_jp": "ä¹ä¿ç° è¬å¯¿",
-    "sake_name_en": "Kubota Manju â \"Ten Thousand Longevities\"",
-    "note_num": "Note #048",
-    "category": "Tasting Note",
-    "kanji_bg": "è¾",
-    "prefecture": "Niigata",
-    "brewery": "Asahi Shuzo (Niigata)"
-  },
-  {
-    "slug": "juyondai-note-047",
-    "type": "tasting_note",
-    "date": "2024-01-10",
-    "title_jp": "ååä»£",
-    "title_en": "Juyondai â \"The 14th Generation\"",
-    "sake_name_jp": "ååä»£",
-    "sake_name_en": "Juyondai â \"The 14th Generation\"",
-    "note_num": "Note #047",
-    "category": "Tasting Note",
-    "kanji_bg": "é¸",
-    "prefecture": "Yamagata",
-    "brewery": "Takagi Shuzo"
-  },
-  {
-    "slug": "kokuryu-ishidaya-mystery-of-echizen",
-    "type": "index_row",
-    "date": "2024-01-01",
-    "title_jp": "é»é¾ ç³ç°å± â è¶åã®ç¥ç§",
-    "title_en": "Kokuryu Ishidaya â Mystery of Echizen",
-    "category": "Origin Story",
-    "issue": 6,
-    "row_num": "3",
-    "kanji_bg": "é»",
-    "prefecture": "Fukui",
-    "brewery": "Kokuryu Shuzo"
   }
 ]
