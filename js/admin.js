@@ -259,7 +259,11 @@ async function updateIndex(indexPath, newPost, oldSlug = null) {
   posts.push(newPost);
   posts.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-  const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(posts, null, 2))));
+  const jsonString = JSON.stringify(posts, null, 2);
+const utf8Bytes = new TextEncoder().encode(jsonString);
+let binary = '';
+utf8Bytes.forEach(byte => binary += String.fromCharCode(byte));
+const encoded = btoa(binary);
   const body = {
     message: oldSlug ? `Update ${newPost.slug} in index` : `Add ${newPost.slug} to index`,
     content: encoded,
