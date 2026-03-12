@@ -481,6 +481,8 @@ if (oldFilePath && oldFileSha) {
   }
 }
 
+
+
 // ─────────────────────────────────────────────
 //  PUBLISH — EDITORIAL POST
 // ─────────────────────────────────────────────
@@ -661,6 +663,162 @@ if (oldFilePath && oldFileSha) {
     setStatus(status, `Error: ${err.message}`, 'err');
   } finally {
     btn.disabled = false;
+  }
+}
+
+// ─────────────────────────────────────────────
+//  DELETE POST FUNCTIONALITY
+// ─────────────────────────────────────────────
+function getAllFieldIds(type) {
+  if (type === 'hero') {
+    return ['hero-slug','hero-title','hero-subtitle','hero-body','hero-caption'];
+  } else if (type === 'editorial') {
+    return ['editorial-slug','editorial-title','editorial-subtitle','editorial-body'];
+  } else if (type === 'note') {
+    return ['note-slug','note-title','note-name-en','note-classification',
+            'note-brewery','note-region','note-rice','note-seimai',
+            'note-smv','note-acidity','note-abv','note-tasting','note-pairing',
+            'note-sweetness','note-umami','note-acidity-bar','note-finish'];
+  }
+  return [];
+}
+
+async function deletePost(type, slug) {
+  if (!slug) {
+    alert('No post selected to delete.');
+    return;
+  }
+
+  const confirmDelete = confirm(`Are you sure you want to delete "${slug}"? This cannot be undone.`);
+  if (!confirmDelete) return;
+
+  const dir = (type === 'note' || type === 'tasting_note') ? 'notes' : 'posts';
+  const filePath = `${dir}/${slug}.json`;
+
+  try {
+    const fileData = await ghGetFresh(filePath);
+    if (!fileData) {
+      alert('File not found on GitHub. It may have been already deleted.');
+      return;
+    }
+
+    await ghDeleteFile(filePath, fileData.sha, `Delete ${type} post: ${slug}`);
+
+    const indexData = await ghGetFresh('data/posts.json');
+    if (indexData) {
+      let posts = JSON.parse(atob(indexData.content.replace(/\s/g, '')));
+      posts = posts.filter(p => !(p.slug === slug && p.type === type));
+      
+      const jsonString = JSON.stringify(posts, null, 2);
+      const utf8Bytes = new TextEncoder().encode(jsonString);
+      let binary = '';
+      utf8Bytes.forEach(b => binary += String.fromCharCode(b));
+      const encoded = btoa(binary);
+
+      await fetch(`https://api.github.com/repos/${REPO}/contents/data/posts.json`, {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${pat}`,
+          'Content-Type': 'application/json',
+          Accept: 'application/vnd.github+json'
+        },
+        body: JSON.stringify({
+          message: `Remove deleted post ${slug} from index`,
+          content: encoded,
+          sha: indexData.sha,
+          branch: BRANCH
+        })
+      });
+    }
+
+    alert(`Post "${slug}" deleted successfully.`);
+    await loadAllPosts();
+    populateEditDropdowns();
+    resetForm(type, getAllFieldIds(type));
+    resetEditState();
+  } catch (err) {
+    alert(`Error deleting post: ${err.message}`);
+    console.error(err);
+  }
+}
+
+async function syncIndex() {
+  if (!confirm('This will rebuild the index from all files in posts/ and notes/. Continue?')) return;
+
+  const status = document.getElementById('sync-status');
+  status.textContent = 'Syncing...';
+
+  try {
+    let allPosts = [];
+
+    const postsDir = await fetch(`https://api.github.com/repos/${REPO}/contents/posts?ref=${BRANCH}`, {
+      headers: { Authorization: `Bearer ${pat}` }
+    });
+    if (postsDir.ok) {
+      const files = await postsDir.json();
+      for (const file of files) {
+        if (file.name.endsWith('.json')) {
+          const data = await ghGetFresh(`posts/${file.name}`);
+          if (data) {
+            const content = atob(data.content.replace(/\s/g, ''));
+            const post = JSON.parse(content);
+            allPosts.push(post);
+          }
+        }
+      }
+    }
+
+    const notesDir = await fetch(`https://api.github.com/repos/${REPO}/contents/notes?ref=${BRANCH}`, {
+      headers: { Authorization: `Bearer ${pat}` }
+    });
+    if (notesDir.ok) {
+      const files = await notesDir.json();
+      for (const file of files) {
+        if (file.name.endsWith('.json')) {
+          const data = await ghGetFresh(`notes/${file.name}`);
+          if (data) {
+            const content = atob(data.content.replace(/\s/g, ''));
+            const post = JSON.parse(content);
+            allPosts.push(post);
+          }
+        }
+      }
+    }
+
+    allPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    const indexData = await ghGetFresh('data/posts.json');
+    const sha = indexData ? indexData.sha : null;
+
+    const jsonString = JSON.stringify(allPosts, null, 2);
+    const utf8Bytes = new TextEncoder().encode(jsonString);
+    let binary = '';
+    utf8Bytes.forEach(b => binary += String.fromCharCode(b));
+    const encoded = btoa(binary);
+
+    const res = await fetch(`https://api.github.com/repos/${REPO}/contents/data/posts.json`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${pat}`,
+        'Content-Type': 'application/json',
+        Accept: 'application/vnd.github+json'
+      },
+      body: JSON.stringify({
+        message: 'Sync index with actual files',
+        content: encoded,
+        branch: BRANCH,
+        sha: sha
+      })
+    });
+
+    if (!res.ok) throw new Error('Failed to write index');
+
+    status.textContent = '✅ Index synced!';
+    await loadAllPosts();
+    populateEditDropdowns();
+  } catch (err) {
+    status.textContent = `❌ Error: ${err.message}`;
+    console.error(err);
   }
 }
 
