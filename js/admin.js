@@ -137,8 +137,12 @@ async function loadAllPosts() {
     if (data) {
       const jsonString = base64ToUtf8(data.content);
       existingPosts = JSON.parse(jsonString);
+      console.log('✅ Loaded posts:', existingPosts.length);
+    } else {
+      existingPosts = [];
     }
   } catch (e) {
+    console.error('❌ Failed to load posts:', e);
     existingPosts = [];
   }
 }
