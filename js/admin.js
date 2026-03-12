@@ -554,12 +554,9 @@ async function ghGetFresh(path) {
     `https://api.github.com/repos/${REPO}/contents/${path}?ref=${BRANCH}`,
     {
       method:  'GET',
-      cache:   'no-store',
       headers: {
         Authorization:   `Bearer ${pat}`,
         Accept:          'application/vnd.github+json',
-        'Cache-Control': 'no-store',
-        'Pragma':        'no-cache'
       }
     }
   );
@@ -581,7 +578,6 @@ async function ghPutFile(path, contentB64, message) {
     `https://api.github.com/repos/${REPO}/contents/${path}`,
     {
       method:  'PUT',
-      cache:   'no-store',
       headers: {
         Authorization:  `Bearer ${pat}`,
         Accept:         'application/vnd.github+json',
