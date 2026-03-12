@@ -596,7 +596,13 @@ async function ghPutFile(path, contentB64, message) {
 
 // PUT a JSON object as a UTF-8 encoded file
 async function ghPutJson(path, obj, message) {
-  const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(obj, null, 2))));
+  // Convert JSON string to UTF-8 bytes, then to Base64
+  const jsonString = JSON.stringify(obj, null, 2);
+  const utf8Bytes = new TextEncoder().encode(jsonString);
+  let binary = '';
+  utf8Bytes.forEach(byte => binary += String.fromCharCode(byte));
+  const encoded = btoa(binary);
+  
   return ghPutFile(path, encoded, message);
 }
 
