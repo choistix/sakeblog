@@ -6,7 +6,7 @@ const SITE_CONFIG = {
   owner: 'choistix',
 
   // The repository name (e.g. "seishu-techou" or "yourusername.github.io")
-  repo: 'osusume',
+  repo: 'sakeblog',
 
   // Branch to write data to (usually "main")
   branch: 'main',
