@@ -258,11 +258,9 @@ async function updateIndex(indexPath, newPost, oldSlug = null) {
   let posts = JSON.parse(atob(existing.content.replace(/\s/g, '')));
 
   if (oldSlug) {
-    // Remove the old entry (match by slug and type)
     const index = posts.findIndex(p => p.slug === oldSlug && p.type === newPost.type);
     if (index !== -1) posts.splice(index, 1);
   } else {
-    // Guard against duplicate slugs for new posts
     if (posts.find(p => p.slug === newPost.slug && p.type === newPost.type)) {
       throw new Error(`"${newPost.slug}" (${newPost.type}) already exists.`);
     }
@@ -271,11 +269,12 @@ async function updateIndex(indexPath, newPost, oldSlug = null) {
   posts.push(newPost);
   posts.sort((a, b) => new Date(b.date) - new Date(a.date));
 
+  // ✅ CORRECT ENCODING (same as ghPutJson)
   const jsonString = JSON.stringify(posts, null, 2);
-const utf8Bytes = new TextEncoder().encode(jsonString);
-let binary = '';
-utf8Bytes.forEach(byte => binary += String.fromCharCode(byte));
-const encoded = btoa(binary);
+  const utf8Bytes = new TextEncoder().encode(jsonString);
+  let binary = '';
+  utf8Bytes.forEach(byte => binary += String.fromCharCode(byte));
+  const encoded = btoa(binary);
 
   const body = {
     message: oldSlug ? `Update ${newPost.slug} in index` : `Add ${newPost.slug} to index`,
@@ -289,6 +288,7 @@ const encoded = btoa(binary);
     headers: {
       Authorization: `Bearer ${pat}`,
       'Content-Type': 'application/json',
+      Accept: 'application/vnd.github+json'
     },
     body: JSON.stringify(body)
   });
