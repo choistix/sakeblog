@@ -123,9 +123,7 @@ function populateIssueDropdowns() {
 
 // Add this helper near the other helpers
 function base64ToUtf8(base64) {
-  // Remove any whitespace that might have been added
-  const clean = base64.replace(/\s/g, '');
-  const binary = atob(clean);
+  const binary = atob(base64.replace(/\s/g, ''));
   const bytes = new Uint8Array(binary.length);
   for (let i = 0; i < binary.length; i++) {
     bytes[i] = binary.charCodeAt(i);
@@ -137,7 +135,8 @@ async function loadAllPosts() {
   try {
     const data = await ghGetFresh('data/posts.json');
     if (data) {
-      existingPosts = JSON.parse(atob(data.content.replace(/\s/g, '')));
+      const jsonString = base64ToUtf8(data.content);
+      existingPosts = JSON.parse(jsonString);
     }
   } catch (e) {
     existingPosts = [];
