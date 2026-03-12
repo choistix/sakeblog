@@ -52,6 +52,19 @@
     .btn-publish:disabled { opacity: 0.4; cursor: not-allowed; }
     .status-ok  { color: #2d7a4f; font-size: 13px; }
     .status-err { color: var(--red); font-size: 13px; }
+    .btn-reset {
+  padding: 14px 24px;
+  background: var(--muted);
+  color: var(--bg);
+  border: none;
+  font-family: 'Georgia', serif;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.btn-reset:hover { opacity: 0.75; }
+    
   </style>
 </head>
 <body>
@@ -89,6 +102,14 @@
   <div id="form-hero">
     <div class="form-section">
       <p class="form-section-title">Publication</p>
+      
+      <div class="field" style="margin-bottom: 2rem;">
+  <label>Load existing hero</label>
+  <select id="hero-edit-select" onchange="loadPostForEdit('hero', this.value)">
+    <option value="">— Select hero to edit —</option>
+  </select>
+</div>
+      
       <div class="field-row">
         <div class="field"><label>Issue</label><select id="hero-issue"></select></div>
         <div class="field"><label>Slug</label><input type="text" id="hero-slug" placeholder="e.g. summer-namazake-feature" /></div>
@@ -118,6 +139,7 @@
     </div>
     <div class="submit-row">
       <button class="btn-publish" id="hero-submit-btn" onclick="publishHero()">Publish Entry</button>
+      <button class="btn-reset" type="button" onclick="resetForm('hero', ['hero-slug','hero-title','hero-subtitle','hero-body','hero-caption']); resetEditState();">Reset</button>
       <span id="hero-status"></span>
     </div>
   </div>
@@ -126,6 +148,14 @@
   <div id="form-editorial" style="display:none;">
     <div class="form-section">
       <p class="form-section-title">Publication</p>
+
+      <div class="field" style="margin-bottom: 2rem;">
+  <label>Load existing editorial</label>
+  <select id="editorial-edit-select" onchange="loadPostForEdit('editorial', this.value)">
+    <option value="">— Select editorial to edit —</option>
+  </select>
+</div>
+      
       <div class="field-row">
         <div class="field"><label>Issue</label><select id="editorial-issue"></select></div>
         <div class="field"><label>Slug</label><input type="text" id="editorial-slug" placeholder="e.g. kubota-origin-story" /></div>
@@ -154,6 +184,7 @@
     </div>
     <div class="submit-row">
       <button class="btn-publish" id="editorial-submit-btn" onclick="publishEditorial()">Publish Entry</button>
+       <button class="btn-reset" type="button" onclick="resetForm('editorial', ['editorial-slug','editorial-title','editorial-subtitle','editorial-body','editorial-issue']); resetEditState();">Reset</button>
       <span id="editorial-status"></span>
     </div>
   </div>
@@ -162,6 +193,14 @@
   <div id="form-note" style="display:none;">
     <div class="form-section">
       <p class="form-section-title">Publication</p>
+
+      <div class="field" style="margin-bottom: 2rem;">
+  <label>Load existing note</label>
+  <select id="note-edit-select" onchange="loadPostForEdit('note', this.value)">
+    <option value="">— Select note to edit —</option>
+  </select>
+</div>
+      
       <div class="field-row">
         <div class="field"><label>Issue</label><select id="note-issue"></select></div>
         <div class="field"><label>Slug</label><input type="text" id="note-slug" placeholder="e.g. dewatsuru-junmai-ginjo" /></div>
@@ -221,6 +260,7 @@
     </div>
     <div class="submit-row">
       <button class="btn-publish" id="note-submit-btn" onclick="publishNote()">Publish Entry</button>
+      <button class="btn-reset" type="button" onclick="resetForm('note', ['note-slug','note-title', 'note-name-en', 'note-classification', 'note-brewery', 'note-region', 'note-rice', 'note-seimai', 'note-smv', 'note-acidity', 'note-abv', 'note-tasting', 'note-pairing', 'note-sweetness', 'note-umami', 'note-acidity-bar', 'note-finish']); resetEditState();">Reset</button>
       <span id="note-status"></span>
     </div>
   </div>
