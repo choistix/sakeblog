@@ -19,6 +19,9 @@ const imageState = {
   note:      { b64: null, name: null }
 };
 
+let existingPosts = [];           // all posts from index
+let currentEditSlug = null;       // slug of post being edited
+let currentEditSha = null;        // sha of the post file (for update)
 let pat = '';
 let existingIssues = [];
 
@@ -68,6 +71,8 @@ window.addEventListener('DOMContentLoaded', () => {
 async function initAdmin() {
   buildTagGrids();
   await loadIssueNumbers();
+  await loadAllPosts();            // new
+  populateEditDropdowns();         // new
 }
 
 // ─────────────────────────────────────────────
@@ -110,6 +115,171 @@ function populateIssueDropdowns() {
     newOpt.selected    = true;
     sel.appendChild(newOpt);
   });
+}
+
+// ─────────────────────────────────────────────
+//  EDITING HELPERS
+// ─────────────────────────────────────────────
+
+async function loadAllPosts() {
+  try {
+    const data = await ghGetFresh('data/posts.json');
+    if (data) {
+      existingPosts = JSON.parse(atob(data.content.replace(/\s/g, '')));
+    }
+  } catch (e) {
+    existingPosts = [];
+  }
+}
+
+function populateEditDropdowns() {
+  const heroSelect = document.getElementById('hero-edit-select');
+  const editorialSelect = document.getElementById('editorial-edit-select');
+  const noteSelect = document.getElementById('note-edit-select');
+
+  if (heroSelect) {
+    heroSelect.innerHTML = '<option value="">— Select hero to edit —</option>';
+    existingPosts.filter(p => p.type === 'hero').forEach(p => {
+      const opt = document.createElement('option');
+      opt.value = p.slug;
+      opt.textContent = `${p.title_jp || p.slug} (Issue ${p.issue})`;
+      heroSelect.appendChild(opt);
+    });
+  }
+
+  if (editorialSelect) {
+    editorialSelect.innerHTML = '<option value="">— Select editorial to edit —</option>';
+    existingPosts.filter(p => p.type === 'index' || p.type === 'index_row').forEach(p => {
+      const opt = document.createElement('option');
+      opt.value = p.slug;
+      opt.textContent = `${p.title_jp || p.slug} (Issue ${p.issue})`;
+      editorialSelect.appendChild(opt);
+    });
+  }
+
+  if (noteSelect) {
+    noteSelect.innerHTML = '<option value="">— Select note to edit —</option>';
+    existingPosts.filter(p => p.type === 'note' || p.type === 'tasting_note').forEach(p => {
+      const opt = document.createElement('option');
+      opt.value = p.slug;
+      opt.textContent = `${p.sake_name_jp || p.title_jp || p.slug} (Issue ${p.issue})`;
+      noteSelect.appendChild(opt);
+    });
+  }
+}
+
+async function loadPostForEdit(type, slug) {
+  if (!slug) return;
+
+  const dir = (type === 'note' || type === 'tasting_note') ? 'notes' : 'posts';
+  try {
+    const data = await ghGetFresh(`${dir}/${slug}.json`);
+    if (!data) throw new Error('Post file not found');
+    const post = JSON.parse(atob(data.content.replace(/\s/g, '')));
+    currentEditSlug = slug;
+    currentEditSha = data.sha;
+
+    // Populate common fields
+    document.getElementById(`${type}-slug`).value = post.slug || '';
+    document.getElementById(`${type}-title`).value = post.title_jp || '';
+    if (type !== 'note') {
+      document.getElementById(`${type}-subtitle`).value = post.subtitle || post.title_en || '';
+      document.getElementById(`${type}-body`).value = post.body || '';
+    }
+
+    const issueSelect = document.getElementById(`${type}-issue`);
+    if (issueSelect) issueSelect.value = post.issue || '';
+
+    // Tags
+    document.querySelectorAll(`#${type}-tags .tag-chip`).forEach(c => c.classList.remove('selected'));
+    if (Array.isArray(post.tags)) {
+      post.tags.forEach(tag => {
+        const chip = document.querySelector(`#${type}-tags .tag-chip[data-tag="${tag}"]`);
+        if (chip) chip.classList.add('selected');
+      });
+    }
+
+    // Image handling
+    removeImage(type); // clear current preview
+    if (post.image) {
+      imageState[type].existingPath = post.image;  // custom property
+      const previewWrap = document.getElementById(`${type}-preview-wrap`);
+      const previewImg = document.getElementById(`${type}-preview-img`);
+      previewImg.src = `https://raw.githubusercontent.com/${REPO}/${BRANCH}/${post.image}?t=${Date.now()}`;
+      previewWrap.style.display = 'block';
+    }
+
+    // Note-specific fields
+    if (type === 'note') {
+      document.getElementById('note-name-en').value = post.sake_name_en || '';
+      document.getElementById('note-classification').value = post.classification || '';
+      document.getElementById('note-brewery').value = post.brewery || '';
+      document.getElementById('note-region').value = post.region || post.prefecture || '';
+      document.getElementById('note-rice').value = post.rice_variety || '';
+      document.getElementById('note-seimai').value = post.seimaibuai || '';
+      document.getElementById('note-smv').value = post.nihonshu_do || '';
+      document.getElementById('note-acidity').value = post.acidity || '';
+      document.getElementById('note-abv').value = post.alcohol || '';
+      document.getElementById('note-tasting').value = post.tasting_notes || '';
+      document.getElementById('note-pairing').value = post.pairing || '';
+      document.getElementById('note-sweetness').value = post.sweetness || 0;
+      document.getElementById('note-umami').value = post.umami || 0;
+      document.getElementById('note-acidity-bar').value = post.acidity || 0;
+      document.getElementById('note-finish').value = post.finish || 0;
+    }
+
+  } catch (err) {
+    alert(`Error loading post: ${err.message}`);
+  }
+}
+
+function resetEditState() {
+  currentEditSlug = null;
+  currentEditSha = null;
+}
+
+// New index update function (replaces appendToIndex for editing)
+async function updateIndex(indexPath, newPost, oldSlug = null) {
+  const existing = await ghGetFresh(indexPath);
+  if (!existing) throw new Error('Index file not found');
+
+  let posts = JSON.parse(atob(existing.content.replace(/\s/g, '')));
+
+  if (oldSlug) {
+    // Remove the old entry (match by slug and type)
+    const index = posts.findIndex(p => p.slug === oldSlug && p.type === newPost.type);
+    if (index !== -1) posts.splice(index, 1);
+  } else {
+    // Guard against duplicate slugs for new posts
+    if (posts.find(p => p.slug === newPost.slug && p.type === newPost.type)) {
+      throw new Error(`"${newPost.slug}" (${newPost.type}) already exists.`);
+    }
+  }
+
+  posts.push(newPost);
+  posts.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+  const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(posts, null, 2))));
+  const body = {
+    message: oldSlug ? `Update ${newPost.slug} in index` : `Add ${newPost.slug} to index`,
+    content: encoded,
+    branch: BRANCH,
+    sha: existing.sha
+  };
+
+  const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${indexPath}`, {
+    method: 'PUT',
+    headers: {
+      Authorization: `Bearer ${pat}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(body)
+  });
+
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(`Index update failed: ${res.status} ${err.message}`);
+  }
 }
 
 // ─────────────────────────────────────────────
@@ -198,11 +368,11 @@ async function publishHero() {
 
   btn.disabled = true;
   try {
-    let imagePath = null;
+    let imagePath = imageState.hero.existingPath || null;
     if (imageState.hero.b64) {
       imagePath = `assets/images/${slug}-${imageState.hero.name}`;
       setStatus(status, 'Uploading image…', '');
-      await ghPutFile(imagePath, imageState.hero.b64, `Add hero image for ${slug}`);
+      await ghPutFile(imagePath, imageState.hero.b64, `Upload image for ${slug}`);
     }
 
     const post = {
@@ -220,14 +390,22 @@ async function publishHero() {
       date:      new Date().toISOString()
     };
 
-    setStatus(status, 'Writing post file…', '');
-    await ghPutJson(`posts/${slug}.json`, post, `Add hero post: ${slug}`);
+    // Determine file path (use original slug if editing)
+    const fileSlug = currentEditSlug || slug;
+    const filePath = `posts/${fileSlug}.json`;
+
+    setStatus(status, currentEditSlug ? 'Updating post file…' : 'Writing post file…', '');
+    await ghPutJson(filePath, post, `${currentEditSlug ? 'Update' : 'Add'} hero post: ${slug}`);
 
     setStatus(status, 'Updating index…', '');
-    await appendToIndex('data/posts.json', post);
+    await updateIndex('data/posts.json', post, currentEditSlug);
 
     setStatus(status, `✓ Published — post.html?slug=${slug}`, 'ok');
     resetForm('hero', ['hero-slug','hero-title','hero-subtitle','hero-body','hero-caption']);
+    resetEditState();
+    // Refresh dropdowns
+    await loadAllPosts();
+    populateEditDropdowns();
   } catch (err) {
     setStatus(status, `Error: ${err.message}`, 'err');
   } finally {
@@ -251,16 +429,16 @@ async function publishEditorial() {
 
   btn.disabled = true;
   try {
-    let imagePath = null;
+    let imagePath = imageState.editorial.existingPath || null;
     if (imageState.editorial.b64) {
       imagePath = `assets/images/${slug}-${imageState.editorial.name}`;
       setStatus(status, 'Uploading image…', '');
-      await ghPutFile(imagePath, imageState.editorial.b64, `Add editorial image for ${slug}`);
+      await ghPutFile(imagePath, imageState.editorial.b64, `Upload image for ${slug}`);
     }
 
     const post = {
       slug,
-      type:     'index',
+      type:     'index',          // or 'index_row'? we'll keep 'index' for consistency
       issue,
       title_jp: title,
       title_en: document.getElementById('editorial-subtitle').value.trim(),
@@ -272,14 +450,20 @@ async function publishEditorial() {
       date:     new Date().toISOString()
     };
 
-    setStatus(status, 'Writing post file…', '');
-    await ghPutJson(`posts/${slug}.json`, post, `Add editorial post: ${slug}`);
+    const fileSlug = currentEditSlug || slug;
+    const filePath = `posts/${fileSlug}.json`;
+
+    setStatus(status, currentEditSlug ? 'Updating post file…' : 'Writing post file…', '');
+    await ghPutJson(filePath, post, `${currentEditSlug ? 'Update' : 'Add'} editorial post: ${slug}`);
 
     setStatus(status, 'Updating index…', '');
-    await appendToIndex('data/posts.json', post);
+    await updateIndex('data/posts.json', post, currentEditSlug);
 
     setStatus(status, `✓ Published — post.html?slug=${slug}`, 'ok');
     resetForm('editorial', ['editorial-slug','editorial-title','editorial-subtitle','editorial-body']);
+    resetEditState();
+    await loadAllPosts();
+    populateEditDropdowns();
   } catch (err) {
     setStatus(status, `Error: ${err.message}`, 'err');
   } finally {
@@ -303,7 +487,7 @@ async function publishNote() {
 
   btn.disabled = true;
   try {
-    let imagePath = null;
+    let imagePath = imageState.note.existingPath || null;
     if (imageState.note.b64) {
       imagePath = `assets/images/${slug}-${imageState.note.name}`;
       setStatus(status, 'Uploading image…', '');
@@ -336,12 +520,15 @@ async function publishNote() {
       tags,
       date:           new Date().toISOString()
     };
+    
+    const fileSlug = currentEditSlug || slug;
+    const filePath = `notes/${fileSlug}.json`;
 
     setStatus(status, 'Writing note file…', '');
     await ghPutJson(`notes/${slug}.json`, post, `Add tasting note: ${slug}`);
 
     setStatus(status, 'Updating index…', '');
-    await appendToIndex('data/posts.json', post);
+    await updateIndex('data/posts.json', post, currentEditSlug);
 
     setStatus(status, `✓ Published — post.html?slug=${slug}`, 'ok');
     resetForm('note', [
@@ -418,7 +605,7 @@ async function ghPutJson(path, obj, message) {
 }
 
 // Read index, append new post, write back — all sequential to avoid SHA conflicts
-async function appendToIndex(indexPath, post) {
+/* async function appendToIndex(indexPath, post) {
   const existing = await ghGetFresh(indexPath);
 
   let posts = [];
@@ -462,6 +649,7 @@ async function appendToIndex(indexPath, post) {
   }
   return res.json();
 }
+*/
 
 // ─────────────────────────────────────────────
 //  UTILITIES
