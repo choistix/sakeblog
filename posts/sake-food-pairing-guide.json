@@ -1,13 +1,16 @@
 {
-  "slug": "sake-food-pairing-guide",
-  "type": "index_row",
-  "date": "2024-03-05",
-  "title_jp": "酒と料理のマリアージュ",
-  "title_en": "Sake and Food Pairing: A Guide",
-  "subtitle": "How to match different styles of sake with dishes.",
-  "body": "Unlike wine, sake’s savoury umami and low acidity allow it to complement a wide range of cuisines. Light, fragrant daiginjo pairs well with delicate sashimi, while rich junmai stands up to grilled meats and cheese.\n\nThis guide explores the basic principles: match flavour intensity, consider regional pairings, and experiment with contrasting elements.",
+  "slug": "trying",
+  "type": "index",
+  "issue": 9,
+  "title_jp": "lsmds",
+  "title_en": "slknd",
+  "subtitle": "slknd",
+  "body": "trying something new",
   "image": null,
-  "kanji_bg": "食",
-  "tags": ["guide", "pairing", "education"],
-  "issue": 7
+  "kanji_bg": "酒",
+  "tags": [
+    "daiginjo",
+    "muroka"
+  ],
+  "date": "2026-03-12T22:39:19.153Z"
 }
