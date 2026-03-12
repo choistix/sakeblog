@@ -1,14 +1,42 @@
 [
   {
+    "slug": "test-taste",
+    "type": "note",
+    "issue": 10,
+    "title_jp": "漢字",
+    "sake_name_jp": "漢字",
+    "sake_name_en": "sd",
+    "classification": "sad",
+    "brewery": "asd",
+    "prefecture": "dsa",
+    "region": "dsa",
+    "rice_variety": "dsadsa",
+    "seimaibuai": "",
+    "nihonshu_do": "4",
+    "acidity": 43,
+    "alcohol": "23",
+    "tasting_notes": "sdasdasdasd",
+    "sweetness": 52,
+    "umami": 32,
+    "finish": 53,
+    "pairing": "",
+    "image": null,
+    "kanji_bg": "酒",
+    "tags": [
+      "tokubetsu"
+    ],
+    "date": "2026-03-12T23:21:08.953Z"
+  },
+  {
     "slug": "trial",
     "type": "index",
     "issue": 7,
-    "title_jp": "This is a  漢字",
+    "title_jp": "This is a  æ¼¢å­",
     "title_en": "test subject",
     "subtitle": "test subject",
     "body": "trial and error",
     "image": "assets/images/trial-MarkCPassport.jpg",
-    "kanji_bg": "酒",
+    "kanji_bg": "é",
     "tags": [
       "junmai"
     ],
@@ -23,7 +51,7 @@
     "subtitle": "slknd",
     "body": "trying something new",
     "image": null,
-    "kanji_bg": "é",
+    "kanji_bg": "Ã©ÂÂ",
     "tags": [
       "daiginjo",
       "muroka"
@@ -34,13 +62,13 @@
     "slug": "dassai-23-beyond",
     "type": "hero",
     "date": "2024-03-25",
-    "title_jp": "çºç¥­ 23 â ç£¨ãã®åã¸",
-    "title_en": "Dassai 23 â Beyond the Standard",
+    "title_jp": "Ã§ÂÂºÃ§Â¥Â­ 23 Ã¢ÂÂ Ã§Â£Â¨Ã£ÂÂÃ£ÂÂ®Ã¥ÂÂÃ£ÂÂ¸",
+    "title_en": "Dassai 23 Ã¢ÂÂ Beyond the Standard",
     "subtitle": "The benchmark for modern daiginjo, polished to 23%.",
     "body": "Dassai 23 is the flagship of Asahi Shuzo in Yamaguchi, made with Yamada Nishiki rice polished down to 23%. The result is an intensely fragrant sake with notes of apple, banana, and lychee, yet a crisp, clean finish.\n\nThis sake revolutionised the industry by proving that high polishing could produce a consistent, fruit-forward style that appeals globally. It is best enjoyed slightly chilled.",
     "image": null,
     "caption": "",
-    "kanji_bg": "çº",
+    "kanji_bg": "Ã§ÂÂº",
     "tags": [
       "daiginjo",
       "yamaguchi",
@@ -52,8 +80,8 @@
     "slug": "hakkaisan-tokubetsu-junmai",
     "type": "note",
     "date": "2024-03-22",
-    "title_jp": "å«æµ·å±± ç¹å¥ç´ç±³",
-    "sake_name_jp": "å«æµ·å±± ç¹å¥ç´ç±³",
+    "title_jp": "Ã¥ÂÂ«Ã¦ÂµÂ·Ã¥Â±Â± Ã§ÂÂ¹Ã¥ÂÂ¥Ã§Â´ÂÃ§Â±Â³",
+    "sake_name_jp": "Ã¥ÂÂ«Ã¦ÂµÂ·Ã¥Â±Â± Ã§ÂÂ¹Ã¥ÂÂ¥Ã§Â´ÂÃ§Â±Â³",
     "sake_name_en": "Hakkaisan Tokubetsu Junmai",
     "classification": "Tokubetsu Junmai",
     "brewery": "Hakkaisan Brewery",
@@ -70,7 +98,7 @@
     "finish": 60,
     "pairing": "Grilled fish, yakitori, sushi",
     "image": null,
-    "kanji_bg": "å«",
+    "kanji_bg": "Ã¥ÂÂ«",
     "tags": [
       "tokubetsu",
       "junmai",
@@ -82,13 +110,13 @@
     "slug": "juyondai-cult-classic",
     "type": "hero",
     "date": "2024-03-20",
-    "title_jp": "ååä»£ â è³é«ã®ä¸æ¯",
-    "title_en": "Juyondai â The Cult Classic",
-    "subtitle": "Yamagataâs legendary sake that redefined premium brewing.",
-    "body": "Juyondai, brewed by Takagi Shuzo, is one of the most sought-after sake brands in Japan. Its rich, fruity profile and velvety texture come from the use of rare yeast strains and meticulous brewing techniques.\n\nThe signature label, \"Juyondai\" (ååä»£), refers to the 14th generation of the Takagi family. This sake often features notes of melon, pear, and white flowers, with a long, elegant finish.",
+    "title_jp": "Ã¥ÂÂÃ¥ÂÂÃ¤Â»Â£ Ã¢ÂÂ Ã¨ÂÂ³Ã©Â«ÂÃ£ÂÂ®Ã¤Â¸ÂÃ¦ÂÂ¯",
+    "title_en": "Juyondai Ã¢ÂÂ The Cult Classic",
+    "subtitle": "YamagataÃ¢ÂÂs legendary sake that redefined premium brewing.",
+    "body": "Juyondai, brewed by Takagi Shuzo, is one of the most sought-after sake brands in Japan. Its rich, fruity profile and velvety texture come from the use of rare yeast strains and meticulous brewing techniques.\n\nThe signature label, \"Juyondai\" (Ã¥ÂÂÃ¥ÂÂÃ¤Â»Â£), refers to the 14th generation of the Takagi family. This sake often features notes of melon, pear, and white flowers, with a long, elegant finish.",
     "image": null,
     "caption": "",
-    "kanji_bg": "å",
+    "kanji_bg": "Ã¥ÂÂ",
     "tags": [
       "daiginjo",
       "yamagata",
@@ -100,8 +128,8 @@
     "slug": "tengumai-yamahai-junmai",
     "type": "note",
     "date": "2024-03-18",
-    "title_jp": "å¤©çè å±±å»ç´ç±³",
-    "sake_name_jp": "å¤©çè å±±å»ç´ç±³",
+    "title_jp": "Ã¥Â¤Â©Ã§ÂÂÃ¨ÂÂ Ã¥Â±Â±Ã¥Â»ÂÃ§Â´ÂÃ§Â±Â³",
+    "sake_name_jp": "Ã¥Â¤Â©Ã§ÂÂÃ¨ÂÂ Ã¥Â±Â±Ã¥Â»ÂÃ§Â´ÂÃ§Â±Â³",
     "sake_name_en": "Tengumai Yamahai Junmai",
     "classification": "Yamahai Junmai",
     "brewery": "Tengumai Shuzo",
@@ -112,13 +140,13 @@
     "nihonshu_do": "+5",
     "acidity": 65,
     "alcohol": "15.5%",
-    "tasting_notes": "A bold, savoury sake with aromas of roasted nuts, yoghurt, and a hint of mushroom. On the palate, itâs full-bodied with a sharp acidity that cuts through fatty fish. The finish is long and dry.",
+    "tasting_notes": "A bold, savoury sake with aromas of roasted nuts, yoghurt, and a hint of mushroom. On the palate, itÃ¢ÂÂs full-bodied with a sharp acidity that cuts through fatty fish. The finish is long and dry.",
     "sweetness": 20,
     "umami": 70,
     "finish": 75,
     "pairing": "Grilled mackerel, aged cheese",
     "image": null,
-    "kanji_bg": "å¤©",
+    "kanji_bg": "Ã¥Â¤Â©",
     "tags": [
       "yamahai",
       "junmai",
@@ -130,13 +158,13 @@
     "slug": "kubota-manju-elegance",
     "type": "hero",
     "date": "2024-03-15",
-    "title_jp": "ä¹ä¿ç° è¬å¯¿ â æ°æ½ã®æ°å",
-    "title_en": "Kubota Manju â The Elegance of Niigata",
+    "title_jp": "Ã¤Â¹ÂÃ¤Â¿ÂÃ§ÂÂ° Ã¨ÂÂ¬Ã¥Â¯Â¿ Ã¢ÂÂ Ã¦ÂÂ°Ã¦Â½ÂÃ£ÂÂ®Ã¦Â°ÂÃ¥ÂÂ",
+    "title_en": "Kubota Manju Ã¢ÂÂ The Elegance of Niigata",
     "subtitle": "A flagship sake from the heart of Niigata, known for its clean, crisp profile.",
-    "body": "Kubota Manju is the pinnacle of Asahi Shuzoâs brewing, representing the tanrei karakuchi style that Niigata is famous for. With a light, dry character and subtle fruit notes, it pairs perfectly with delicate seafood.\n\nThis sake is brewed using Gohyakumangoku rice, polished to 50%, and fermented at low temperatures to develop its refined aroma. The name \"Manju\" (è¬å¯¿) means \"ten thousand longevities,\" symbolizing a wish for enduring happiness.",
+    "body": "Kubota Manju is the pinnacle of Asahi ShuzoÃ¢ÂÂs brewing, representing the tanrei karakuchi style that Niigata is famous for. With a light, dry character and subtle fruit notes, it pairs perfectly with delicate seafood.\n\nThis sake is brewed using Gohyakumangoku rice, polished to 50%, and fermented at low temperatures to develop its refined aroma. The name \"Manju\" (Ã¨ÂÂ¬Ã¥Â¯Â¿) means \"ten thousand longevities,\" symbolizing a wish for enduring happiness.",
     "image": null,
     "caption": "",
-    "kanji_bg": "ä¹",
+    "kanji_bg": "Ã¤Â¹Â",
     "tags": [
       "junmai",
       "ginjo",
@@ -148,8 +176,8 @@
     "slug": "kikusui-junmai-ginjo",
     "type": "note",
     "date": "2024-03-12",
-    "title_jp": "èæ°´ ç´ç±³åé¸",
-    "sake_name_jp": "èæ°´ ç´ç±³åé¸",
+    "title_jp": "Ã¨ÂÂÃ¦Â°Â´ Ã§Â´ÂÃ§Â±Â³Ã¥ÂÂÃ©ÂÂ¸",
+    "sake_name_jp": "Ã¨ÂÂÃ¦Â°Â´ Ã§Â´ÂÃ§Â±Â³Ã¥ÂÂÃ©ÂÂ¸",
     "sake_name_en": "Kikusui Junmai Ginjo",
     "classification": "Junmai Ginjo",
     "brewery": "Kikusui Sake",
@@ -166,7 +194,7 @@
     "finish": 50,
     "pairing": "Sashimi, tempura, light salads",
     "image": null,
-    "kanji_bg": "è",
+    "kanji_bg": "Ã¨ÂÂ",
     "tags": [
       "junmai",
       "ginjo",
@@ -178,12 +206,12 @@
     "slug": "art-of-kimoto",
     "type": "index_row",
     "date": "2024-03-10",
-    "title_jp": "çéã®ææ³ â ä¼çµ±ãé¸ã",
+    "title_jp": "Ã§ÂÂÃ©ÂÂÃ£ÂÂ®Ã¦ÂÂÃ¦Â³Â Ã¢ÂÂ Ã¤Â¼ÂÃ§ÂµÂ±Ã£ÂÂÃ©ÂÂ¸Ã£ÂÂ",
     "title_en": "The Art of Kimoto",
     "subtitle": "A labour-intensive method that yields complex, earthy flavours.",
     "body": "Kimoto is the traditional yeast-starter method that predates modern additions of lactic acid. Brewers literally grind the rice mixture with poles to encourage wild lactic acid bacteria, a process that takes weeks but results in sake with deep umami and a robust character.\n\nToday, only a handful of breweries still use the full kimoto method, valuing its ability to create distinctive, age-worthy sake.",
     "image": null,
-    "kanji_bg": "é¸",
+    "kanji_bg": "Ã©ÂÂ¸",
     "tags": [
       "kimoto",
       "traditional",
@@ -195,12 +223,12 @@
     "slug": "exploring-yamahai",
     "type": "index_row",
     "date": "2024-02-28",
-    "title_jp": "å±±å»ã®ä¸ç â éçã®æ¯å¹",
+    "title_jp": "Ã¥Â±Â±Ã¥Â»ÂÃ£ÂÂ®Ã¤Â¸ÂÃ§ÂÂ Ã¢ÂÂ Ã©ÂÂÃ§ÂÂÃ£ÂÂ®Ã¦ÂÂ¯Ã¥ÂÂ¹",
     "title_en": "Exploring Yamahai",
     "subtitle": "The rustic, wild cousin of kimoto.",
-    "body": "Yamahai (å±±å») is a shortened form of yama-oroshi haishi, a method that skips the labour-intensive grinding of kimoto but still relies on natural lactic acid. It produces sake with pronounced acidity, gamey notes, and a full-bodied texture.\n\nOnce seen as difficult to control, yamahai is now celebrated for the complexity it brings to junmai and ginjo styles.",
+    "body": "Yamahai (Ã¥Â±Â±Ã¥Â»Â) is a shortened form of yama-oroshi haishi, a method that skips the labour-intensive grinding of kimoto but still relies on natural lactic acid. It produces sake with pronounced acidity, gamey notes, and a full-bodied texture.\n\nOnce seen as difficult to control, yamahai is now celebrated for the complexity it brings to junmai and ginjo styles.",
     "image": null,
-    "kanji_bg": "å»",
+    "kanji_bg": "Ã¥Â»Â",
     "tags": [
       "yamahai",
       "traditional",
