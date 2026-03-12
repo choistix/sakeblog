@@ -302,6 +302,29 @@ async function updateIndex(indexPath, newPost, oldSlug = null) {
   }
 }
 
+// Delete Helper
+async function ghDeleteFile(path, sha, message) {
+  const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${pat}`,
+      'Content-Type': 'application/json',
+      Accept: 'application/vnd.github+json'
+    },
+    body: JSON.stringify({
+      message: message,
+      sha: sha,
+      branch: BRANCH
+    })
+  });
+
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(`DELETE failed: ${res.status} ${err.message}`);
+  }
+  return res.json();
+}
+
 // ─────────────────────────────────────────────
 //  TAG GRIDS
 // ─────────────────────────────────────────────
@@ -410,9 +433,34 @@ async function publishHero() {
       date:      new Date().toISOString()
     };
 
-    // Determine file path (use original slug if editing)
-    const fileSlug = currentEditSlug || slug;
-    const filePath = `posts/${fileSlug}.json`;
+    // Determine the file slug and path
+let fileSlug = slug;
+let oldFilePath = null;
+let oldFileSha = null;
+
+if (currentEditSlug && currentEditSlug !== slug) {
+  // Slug changed – we need to delete the old file
+  oldFilePath = `posts/${currentEditSlug}.json`;
+  try {
+    const oldFileData = await ghGetFresh(oldFilePath);
+    if (oldFileData) {
+      oldFileSha = oldFileData.sha;
+    }
+  } catch (e) {
+    console.warn('Could not fetch old file for deletion:', e);
+  }
+  fileSlug = slug; // new slug
+} else {
+  fileSlug = currentEditSlug || slug;
+}
+
+const filePath = `posts/${fileSlug}.json`;
+
+// If there's an old file to delete, do it now
+if (oldFilePath && oldFileSha) {
+  setStatus(status, 'Deleting old file…', '');
+  await ghDeleteFile(oldFilePath, oldFileSha, `Delete old file for ${currentEditSlug} (slug changed to ${slug})`);
+}
 
     setStatus(status, currentEditSlug ? 'Updating post file…' : 'Writing post file…', '');
     await ghPutJson(filePath, post, `${currentEditSlug ? 'Update' : 'Add'} hero post: ${slug}`);
@@ -470,8 +518,34 @@ async function publishEditorial() {
       date:     new Date().toISOString()
     };
 
-    const fileSlug = currentEditSlug || slug;
-    const filePath = `posts/${fileSlug}.json`;
+    // Determine the file slug and path
+let fileSlug = slug;
+let oldFilePath = null;
+let oldFileSha = null;
+
+if (currentEditSlug && currentEditSlug !== slug) {
+  // Slug changed – we need to delete the old file
+  oldFilePath = `posts/${currentEditSlug}.json`;
+  try {
+    const oldFileData = await ghGetFresh(oldFilePath);
+    if (oldFileData) {
+      oldFileSha = oldFileData.sha;
+    }
+  } catch (e) {
+    console.warn('Could not fetch old file for deletion:', e);
+  }
+  fileSlug = slug; // new slug
+} else {
+  fileSlug = currentEditSlug || slug;
+}
+
+const filePath = `posts/${fileSlug}.json`;
+
+// If there's an old file to delete, do it now
+if (oldFilePath && oldFileSha) {
+  setStatus(status, 'Deleting old file…', '');
+  await ghDeleteFile(oldFilePath, oldFileSha, `Delete old file for ${currentEditSlug} (slug changed to ${slug})`);
+}
 
     setStatus(status, currentEditSlug ? 'Updating post file…' : 'Writing post file…', '');
     await ghPutJson(filePath, post, `${currentEditSlug ? 'Update' : 'Add'} editorial post: ${slug}`);
@@ -541,8 +615,34 @@ async function publishNote() {
       date:           new Date().toISOString()
     };
     
-    const fileSlug = currentEditSlug || slug;
-    const filePath = `notes/${fileSlug}.json`;
+    // Determine the file slug and path
+let fileSlug = slug;
+let oldFilePath = null;
+let oldFileSha = null;
+
+if (currentEditSlug && currentEditSlug !== slug) {
+  // Slug changed – we need to delete the old file
+  oldFilePath = `notes/${currentEditSlug}.json`;
+  try {
+    const oldFileData = await ghGetFresh(oldFilePath);
+    if (oldFileData) {
+      oldFileSha = oldFileData.sha;
+    }
+  } catch (e) {
+    console.warn('Could not fetch old file for deletion:', e);
+  }
+  fileSlug = slug; // new slug
+} else {
+  fileSlug = currentEditSlug || slug;
+}
+
+const filePath = `notes/${fileSlug}.json`;
+
+// If there's an old file to delete, do it now
+if (oldFilePath && oldFileSha) {
+  setStatus(status, 'Deleting old file…', '');
+  await ghDeleteFile(oldFilePath, oldFileSha, `Delete old file for ${currentEditSlug} (slug changed to ${slug})`);
+}
 
     setStatus(status, 'Writing note file…', '');
     await ghPutJson(`notes/${slug}.json`, post, `Add tasting note: ${slug}`);
