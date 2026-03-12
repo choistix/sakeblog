@@ -1,0 +1,69 @@
+[
+  {
+    "slug": "dassai-45-the-gateway",
+    "type": "hero",
+    "date": "2024-03-01",
+    "title_jp": "獺祭 四十五 — 入門の一杯",
+    "title_en": "Dassai 45 — The Gateway Pour",
+    "category": "Feature",
+    "issue": "No. 07",
+    "kanji_bg": "獺",
+    "prefecture": "Yamaguchi",
+    "brewery": "Asahi Shuzo"
+  },
+  {
+    "slug": "kokuryu-ishidaya-mystery-of-echizen",
+    "type": "index_row",
+    "date": "2024-01-01",
+    "title_jp": "黒龍 石田屋 — 越前の神秘",
+    "title_en": "Kokuryu Ishidaya — Mystery of Echizen",
+    "category": "Origin Story",
+    "issue": "Issue — 06",
+    "row_num": "3",
+    "kanji_bg": "黒",
+    "prefecture": "Fukui",
+    "brewery": "Kokuryu Shuzo"
+  },
+  {
+    "slug": "juyondai-note-047",
+    "type": "tasting_note",
+    "date": "2024-01-10",
+    "title_jp": "十四代",
+    "title_en": "Juyondai — \"The 14th Generation\"",
+    "sake_name_jp": "十四代",
+    "sake_name_en": "Juyondai — \"The 14th Generation\"",
+    "note_num": "Note #047",
+    "category": "Tasting Note",
+    "kanji_bg": "醸",
+    "prefecture": "Yamagata",
+    "brewery": "Takagi Shuzo"
+  },
+  {
+    "slug": "kubota-manju-note-048",
+    "type": "tasting_note",
+    "date": "2024-01-15",
+    "title_jp": "久保田 萬寿",
+    "title_en": "Kubota Manju — \"Ten Thousand Longevities\"",
+    "sake_name_jp": "久保田 萬寿",
+    "sake_name_en": "Kubota Manju — \"Ten Thousand Longevities\"",
+    "note_num": "Note #048",
+    "category": "Tasting Note",
+    "kanji_bg": "辛",
+    "prefecture": "Niigata",
+    "brewery": "Asahi Shuzo (Niigata)"
+  },
+  {
+    "slug": "nabeshima-tokubetsu-junmai-note-049",
+    "type": "tasting_note",
+    "date": "2024-02-01",
+    "title_jp": "鍋島 特別純米",
+    "title_en": "Nabeshima Tokubetsu Junmai",
+    "sake_name_jp": "鍋島 特別純米",
+    "sake_name_en": "Nabeshima Tokubetsu Junmai",
+    "note_num": "Note #049",
+    "category": "Tasting Note",
+    "kanji_bg": "旨",
+    "prefecture": "Saga",
+    "brewery": "Fukuchiyo Shuzo"
+  }
+]
