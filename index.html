@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>清酒手帖 — Seishu Techou</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Noto+Serif+JP:wght@400;600;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<div class="reg tl"></div>
+<div class="reg tr"></div>
+<div class="reg bl"></div>
+<div class="reg br"></div>
+
+<div class="site-wrap">
+  <main class="main-col">
+
+    <!-- MASTHEAD -->
+    <header class="masthead">
+      <div class="masthead-left">
+        <span class="en">Field Notes on Sake</span>
+        <span class="jp">日本酒の記録</span>
+      </div>
+      <a href="index.html" class="masthead-logo">
+        清酒手帖
+        <span>Seishu Techou</span>
+      </a>
+      <nav class="masthead-right">
+        <a href="#tasting-notes">Tasting Notes</a>
+        <a href="#features">Features</a>
+        <a href="#regions">Regions</a>
+      </nav>
+    </header>
+
+    <!-- DYNAMIC CONTENT -->
+    <div id="hero-section"></div>
+
+    <div id="features-section" class="index-section">
+      <div class="section-header">
+        <div class="section-header-num">01</div>
+        <div class="section-header-title">特集 — Features</div>
+      </div>
+      <div id="features-rows"></div>
+    </div>
+
+    <div class="index-section" id="tasting-notes">
+      <div class="section-header">
+        <div class="section-header-num">02</div>
+        <div class="section-header-title">テイスティングノート — Tasting Notes</div>
+      </div>
+      <div class="tasting-grid" id="tasting-grid">
+        <div class="loading-state">Loading notes…</div>
+      </div>
+    </div>
+
+    <!-- REGIONS STRIP (static) -->
+    <div class="index-section" id="regions">
+      <div class="section-header">
+        <div class="section-header-num">03</div>
+        <div class="section-header-title">地域別 — Browse by Region</div>
+      </div>
+      <div class="region-strip">
+        <div class="region-strip-label"><span>Regions</span></div>
+        <div class="region-card">
+          <div class="region-name-jp">新潟</div>
+          <div class="region-name-en">Niigata</div>
+          <div class="region-count">Tanrei Karakuchi</div>
+          <div class="region-tags">
+            <span class="region-tag">Clean</span>
+            <span class="region-tag">Dry</span>
+            <span class="region-tag">Elegant</span>
+          </div>
+        </div>
+        <div class="region-card">
+          <div class="region-name-jp">京都</div>
+          <div class="region-name-en">Kyoto</div>
+          <div class="region-count">Fushimizumi</div>
+          <div class="region-tags">
+            <span class="region-tag">Soft Water</span>
+            <span class="region-tag">Elegant</span>
+            <span class="region-tag">Refined</span>
+          </div>
+        </div>
+        <div class="region-card">
+          <div class="region-name-jp">山形</div>
+          <div class="region-name-en">Yamagata</div>
+          <div class="region-count">Ginjo Heartland</div>
+          <div class="region-tags">
+            <span class="region-tag">Fruity</span>
+            <span class="region-tag">Aromatic</span>
+            <span class="region-tag">Floral</span>
+          </div>
+        </div>
+        <div class="region-card">
+          <div class="region-name-jp">兵庫</div>
+          <div class="region-name-en">Hyogo</div>
+          <div class="region-count">Nada-Gogo</div>
+          <div class="region-tags">
+            <span class="region-tag">Hard Water</span>
+            <span class="region-tag">Bold</span>
+            <span class="region-tag">Robust</span>
+          </div>
+        </div>
+        <div class="region-card">
+          <div class="region-name-jp">広島</div>
+          <div class="region-name-en">Hiroshima</div>
+          <div class="region-count">Saijo District</div>
+          <div class="region-tags">
+            <span class="region-tag">Umami-rich</span>
+            <span class="region-tag">Full</span>
+            <span class="region-tag">Soft</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <div class="footer-mark">
+        <div class="footer-mark-inner">酒</div>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-head">Navigate</div>
+        <div class="footer-links">
+          <a href="#tasting-notes">Tasting Notes Archive</a>
+          <a href="#features">Features</a>
+          <a href="#regions">Regional Guides</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-head">Topics</div>
+        <div class="footer-links">
+          <a href="#">Junmai Daiginjo</a>
+          <a href="#">Natural Sake</a>
+          <a href="#">Kimoto &amp; Yamahai</a>
+          <a href="#">Aged Koshu</a>
+          <a href="#">Sparkling Sake</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-head">About</div>
+        <div class="footer-links">
+          <a href="#">The Editor</a>
+          <a href="#">Contact</a>
+        </div>
+      </div>
+      <div class="footer-colophon">
+        <span class="footer-colophon-text">清酒手帖 Seishu Techou — Field Notes on Japanese Sake</span>
+        <span class="footer-colophon-text">Est. 2022 — Published Seasonally</span>
+      </div>
+    </footer>
+
+  </main>
+
+  <aside class="spine">
+    <div class="spine-title">清酒手帖</div>
+    <div class="spine-rule"></div>
+    <div class="spine-sub">Sake Field Notes</div>
+  </aside>
+</div>
+
+<!-- config must load first so SITE_CONFIG is available to render.js -->
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/render.js"></script>
+<script>
+(async function () {
+  const heroSection     = document.getElementById('hero-section');
+  const featuresRows    = document.getElementById('features-rows');
+  const featuresSection = document.getElementById('features-section');
+  const tastingGrid     = document.getElementById('tasting-grid');
+
+  let posts = [];
+
+  try {
+    posts = await API.getPosts();
+  } catch (err) {
+    tastingGrid.innerHTML = `<div class="error-state">Could not load posts. ${err.message}</div>`;
+    return;
+  }
+
+  // Accept both old and new type strings
+  const heroes = posts.filter(p => p.type === 'hero');
+  const rows   = posts.filter(p => p.type === 'index' || p.type === 'index_row');
+  const notes  = posts.filter(p => p.type === 'note'  || p.type === 'tasting_note');
+
+  // HERO: show latest hero entry
+  if (heroes.length > 0) {
+    heroSection.innerHTML = Renderer.heroIndex(heroes[0]);
+  }
+
+  // FEATURES: editorial rows
+  if (rows.length > 0) {
+    featuresRows.innerHTML = rows.map(p => Renderer.indexRow(p)).join('');
+  } else {
+    featuresSection.style.display = 'none';
+  }
+
+  // TASTING NOTES: grid
+  if (notes.length > 0) {
+    tastingGrid.innerHTML = notes.map(p => Renderer.tastingCard(p)).join('');
+  } else {
+    tastingGrid.innerHTML = '<div class="loading-state">No tasting notes yet.</div>';
+  }
+})();
+</script>
+</body>
+</html>

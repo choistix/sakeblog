@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Loading… — 清酒手帖</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Noto+Serif+JP:wght@400;600;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<div class="reg tl"></div>
+<div class="reg tr"></div>
+<div class="reg bl"></div>
+<div class="reg br"></div>
+
+<div class="site-wrap">
+  <main class="main-col">
+
+    <!-- MASTHEAD -->
+    <header class="masthead">
+      <div class="masthead-left">
+        <span class="en">Field Notes on Sake</span>
+        <span class="jp">日本酒の記録</span>
+      </div>
+      <a href="index.html" class="masthead-logo">
+        清酒手帖
+        <span>Seishu Techou</span>
+      </a>
+      <nav class="masthead-right">
+        <a href="index.html">← All Posts</a>
+      </nav>
+    </header>
+
+    <a href="index.html" class="back-link">← Back to Index</a>
+
+    <!-- DYNAMIC POST CONTENT -->
+    <div id="post-content">
+      <div class="loading-state">Loading post…</div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <div class="footer-mark">
+        <div class="footer-mark-inner">酒</div>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-head">Navigate</div>
+        <div class="footer-links">
+          <a href="index.html">← All Posts</a>
+          <a href="index.html#tasting-notes">Tasting Notes</a>
+          <a href="index.html#features">Features</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-head">About</div>
+        <div class="footer-links">
+          <a href="#">The Editor</a>
+          <a href="#">Contact</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-head">清酒手帖</div>
+        <div class="footer-links">
+          <a href="#">Field Notes on Japanese Sake</a>
+        </div>
+      </div>
+      <div class="footer-colophon">
+        <span class="footer-colophon-text">清酒手帖 Seishu Techou — Field Notes on Japanese Sake</span>
+        <span class="footer-colophon-text">Est. 2022 — Published Seasonally</span>
+      </div>
+    </footer>
+
+  </main>
+
+  <aside class="spine">
+    <div class="spine-title">清酒手帖</div>
+    <div class="spine-rule"></div>
+    <div class="spine-sub">Sake Field Notes</div>
+  </aside>
+</div>
+
+<!-- config must load first so SITE_CONFIG is available to render.js -->
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/render.js"></script>
+<script>
+(async function () {
+  const postContent = document.getElementById('post-content');
+
+  const params = new URLSearchParams(window.location.search);
+  const slug   = params.get('slug');
+
+  if (!slug) {
+    postContent.innerHTML = `<div class="error-state">No post specified. <a href="index.html">← Return to index</a></div>`;
+    return;
+  }
+
+  try {
+    const post = await API.getPost(slug);
+
+    if (!post) {
+      postContent.innerHTML = `
+        <div class="error-state">
+          Post not found.<br><br>
+          <a href="index.html" style="font-family:var(--font-mono);font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--ink-muted);">← Return to index</a>
+        </div>`;
+      return;
+    }
+
+    document.title = `${post.title_jp || post.sake_name_jp || slug} — 清酒手帖`;
+    postContent.innerHTML = Renderer.renderPostPage(post);
+
+  } catch (err) {
+    postContent.innerHTML = `<div class="error-state">Error loading post: ${err.message}</div>`;
+  }
+})();
+</script>
+</body>
+</html>
