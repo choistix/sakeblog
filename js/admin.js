@@ -121,6 +121,18 @@ function populateIssueDropdowns() {
 //  EDITING HELPERS
 // ─────────────────────────────────────────────
 
+// Add this helper near the other helpers
+function base64ToUtf8(base64) {
+  // Remove any whitespace that might have been added
+  const clean = base64.replace(/\s/g, '');
+  const binary = atob(clean);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) {
+    bytes[i] = binary.charCodeAt(i);
+  }
+  return new TextDecoder().decode(bytes);
+}
+
 async function loadAllPosts() {
   try {
     const data = await ghGetFresh('data/posts.json');
@@ -264,6 +276,7 @@ const utf8Bytes = new TextEncoder().encode(jsonString);
 let binary = '';
 utf8Bytes.forEach(byte => binary += String.fromCharCode(byte));
 const encoded = btoa(binary);
+
   const body = {
     message: oldSlug ? `Update ${newPost.slug} in index` : `Add ${newPost.slug} to index`,
     content: encoded,
