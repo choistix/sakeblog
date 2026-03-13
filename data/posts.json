@@ -1,5 +1,21 @@
 [
   {
+    "slug": "juyondai-cult-classic",
+    "type": "hero",
+    "issue": 8,
+    "title_jp": "十四代 — 至高の一杯",
+    "title_en": "Yamagata’s legendary sake that redefined premium brewing.",
+    "subtitle": "Yamagata’s legendary sake that redefined premium brewing.",
+    "body": "Juyondai, brewed by Takagi Shuzo, is one of the most sought‑after sake brands in Japan. Its rich, fruity profile and velvety texture come from the use of rare yeast strains and meticulous brewing techniques.\n\nThe signature label, \"Juyondai\" (十四代), refers to the 14th generation of the Takagi family. This sake often features notes of melon, pear, and white flowers, with a long, elegant finish.",
+    "image": "assets/images/juyondai-cult-classic-jyuondai.jpg",
+    "caption": "",
+    "kanji_bg": "酒",
+    "tags": [
+      "daiginjo"
+    ],
+    "date": "2026-03-13T01:45:01.914Z"
+  },
+  {
     "slug": "dassai-23-beyond",
     "type": "hero",
     "issue": 8,
@@ -42,24 +58,6 @@
       "tokubetsu",
       "junmai",
       "niigata"
-    ],
-    "issue": 8
-  },
-  {
-    "slug": "juyondai-cult-classic",
-    "type": "hero",
-    "date": "2024-03-20",
-    "title_jp": "十四代 — 至高の一杯",
-    "title_en": "Juyondai — The Cult Classic",
-    "subtitle": "Yamagata’s legendary sake that redefined premium brewing.",
-    "body": "Juyondai, brewed by Takagi Shuzo, is one of the most sought-after sake brands in Japan. Its rich, fruity profile and velvety texture come from the use of rare yeast strains and meticulous brewing techniques.\n\nThe signature label, \"Juyondai\" (十四代), refers to the 14th generation of the Takagi family. This sake often features notes of melon, pear, and white flowers, with a long, elegant finish.",
-    "image": null,
-    "caption": "",
-    "kanji_bg": "十",
-    "tags": [
-      "daiginjo",
-      "yamagata",
-      "premium"
     ],
     "issue": 8
   },
