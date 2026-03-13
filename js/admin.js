@@ -71,8 +71,10 @@ window.addEventListener('DOMContentLoaded', () => {
 async function initAdmin() {
   buildTagGrids();
   await loadIssueNumbers();
-  await loadAllPosts();            // new
-  populateEditDropdowns();         // new
+  await loadAllPosts();
+  populateEditDropdowns();
+  await cleanOrphans();  // 👈 Add this line
+}
 }
 
 // ─────────────────────────────────────────────
@@ -190,17 +192,97 @@ async function loadPostForEdit(type, slug) {
   try {
     const data = await ghGetFresh(`${dir}/${slug}.json`);
     if (!data) throw new Error('Post file not found');
+    
     const post = JSON.parse(atob(data.content.replace(/\s/g, '')));
     currentEditSlug = slug;
     currentEditSha = data.sha;
 
-    // Populate common fields
-    document.getElementById(`${type}-slug`).value = post.slug || '';
-    document.getElementById(`${type}-title`).value = post.title_jp || '';
-    if (type !== 'note') {
-      document.getElementById(`${type}-subtitle`).value = post.subtitle || post.title_en || '';
-      document.getElementById(`${type}-body`).value = post.body || '';
+    // ... rest of existing population code ...
+
+  } catch (err) {
+    console.error('Error loading post:', err);
+    // File doesn't exist – ask to remove from index
+    if (confirm(`The file for "${slug}" does not exist. Remove it from the index?`)) {
+      await removeOrphanFromIndex(type, slug);
+      // Refresh dropdowns
+      await loadAllPosts();
+      populateEditDropdowns();
     }
+  }
+}
+
+// ─────────────────────────────────────────────
+//  AUTO CLEANUP – Remove missing posts from index
+// ─────────────────────────────────────────────
+async function cleanOrphans() {
+  console.log('🧹 Cleaning orphaned index entries...');
+  try {
+    const indexData = await ghGetFresh('data/posts.json');
+    if (!indexData) {
+      console.log('No index file yet, skipping cleanup.');
+      return;
+    }
+
+    let posts = JSON.parse(atob(indexData.content.replace(/\s/g, '')));
+    const originalLength = posts.length;
+    const validPosts = [];
+
+    for (const post of posts) {
+      const dir = (post.type === 'note' || post.type === 'tasting_note') ? 'notes' : 'posts';
+      try {
+        const fileData = await ghGetFresh(`${dir}/${post.slug}.json`);
+        if (fileData) {
+          validPosts.push(post); // file exists
+        } else {
+          console.log(`🗑️ Removing orphan: ${post.slug} (file not found)`);
+        }
+      } catch (err) {
+        // Some other error (network, etc.) – assume file might exist, keep it
+        console.warn(`⚠️ Error checking ${post.slug}: ${err.message} – keeping in index`);
+        validPosts.push(post);
+      }
+    }
+
+    if (validPosts.length === originalLength) {
+      console.log('✅ No orphans found.');
+      return;
+    }
+
+    // Write back the cleaned index
+    const jsonString = JSON.stringify(validPosts, null, 2);
+    const utf8Bytes = new TextEncoder().encode(jsonString);
+    let binary = '';
+    utf8Bytes.forEach(b => binary += String.fromCharCode(b));
+    const encoded = btoa(binary);
+
+    const res = await fetch(`https://api.github.com/repos/${REPO}/contents/data/posts.json`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${pat}`,
+        'Content-Type': 'application/json',
+        Accept: 'application/vnd.github+json'
+      },
+      body: JSON.stringify({
+        message: `Auto-clean: removed ${originalLength - validPosts.length} orphans`,
+        content: encoded,
+        sha: indexData.sha,
+        branch: BRANCH
+      })
+    });
+
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(`Index update failed: ${res.status} ${err.message}`);
+    }
+
+    console.log(`✅ Removed ${originalLength - validPosts.length} orphans.`);
+    // Update local data and dropdowns
+    existingPosts = validPosts;
+    populateEditDropdowns();
+  } catch (err) {
+    console.error('❌ Orphan cleanup failed:', err);
+  }
+}
 
     const issueSelect = document.getElementById(`${type}-issue`);
     if (issueSelect) issueSelect.value = post.issue || '';
@@ -663,6 +745,49 @@ if (oldFilePath && oldFileSha) {
     setStatus(status, `Error: ${err.message}`, 'err');
   } finally {
     btn.disabled = false;
+  }
+}
+
+async function removeOrphanFromIndex(type, slug) {
+  try {
+    const indexData = await ghGetFresh('data/posts.json');
+    if (!indexData) return;
+
+    let posts = JSON.parse(atob(indexData.content.replace(/\s/g, '')));
+    const originalLength = posts.length;
+    posts = posts.filter(p => !(p.slug === slug && p.type === type));
+
+    if (posts.length === originalLength) {
+      alert('Entry not found in index.');
+      return;
+    }
+
+    // Write back the cleaned index
+    const jsonString = JSON.stringify(posts, null, 2);
+    const utf8Bytes = new TextEncoder().encode(jsonString);
+    let binary = '';
+    utf8Bytes.forEach(b => binary += String.fromCharCode(b));
+    const encoded = btoa(binary);
+
+    await fetch(`https://api.github.com/repos/${REPO}/contents/data/posts.json`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${pat}`,
+        'Content-Type': 'application/json',
+        Accept: 'application/vnd.github+json'
+      },
+      body: JSON.stringify({
+        message: `Remove orphaned entry ${slug} from index`,
+        content: encoded,
+        sha: indexData.sha,
+        branch: BRANCH
+      })
+    });
+
+    alert(`Removed "${slug}" from index.`);
+  } catch (err) {
+    alert(`Error removing orphan: ${err.message}`);
+    console.error(err);
   }
 }
 
