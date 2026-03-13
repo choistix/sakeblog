@@ -953,7 +953,7 @@ async function syncIndex() {
 // Fresh GET — always bypasses browser cache, returns raw GitHub API response object or null
 async function ghGetFresh(path) {
   const res = await fetch(
-    `https://api.github.com/repos/${REPO}/contents/${path}?ref=${BRANCH}`,
+    `https://api.github.com/repos/${REPO}/contents/${path}?ref=${BRANCH}&_=${Date.now()}`,
     {
       method:  'GET',
       headers: {
