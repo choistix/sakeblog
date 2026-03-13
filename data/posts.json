@@ -1,5 +1,22 @@
 [
   {
+    "slug": "kubota-manju-elegance",
+    "type": "hero",
+    "issue": 8,
+    "title_jp": "久保田 萬寿 — 新潟の気品",
+    "title_en": "A flagship sake from the heart of Niigata, known for its clean, crisp profile.",
+    "subtitle": "A flagship sake from the heart of Niigata, known for its clean, crisp profile.",
+    "body": "Kubota Manju is the pinnacle of Asahi Shuzo’s brewing, representing the tanrei karakuchi style that Niigata is famous for. With a light, dry character and subtle fruit notes, it pairs perfectly with delicate seafood.\n\nThis sake is brewed using Gohyakumangoku rice, polished to 50%, and fermented at low temperatures to develop its refined aroma. The name \"Manju\" (萬寿) means \"ten thousand longevities,\" symbolizing a wish for enduring happiness.",
+    "image": "assets/images/kubota-manju-elegance-kubotamanju.jpg",
+    "caption": "",
+    "kanji_bg": "酒",
+    "tags": [
+      "junmai",
+      "ginjo"
+    ],
+    "date": "2026-03-13T01:45:49.113Z"
+  },
+  {
     "slug": "juyondai-cult-classic",
     "type": "hero",
     "issue": 8,
@@ -88,24 +105,6 @@
       "yamahai",
       "junmai",
       "ishikawa"
-    ],
-    "issue": 8
-  },
-  {
-    "slug": "kubota-manju-elegance",
-    "type": "hero",
-    "date": "2024-03-15",
-    "title_jp": "久保田 萬寿 — 新潟の気品",
-    "title_en": "Kubota Manju — The Elegance of Niigata",
-    "subtitle": "A flagship sake from the heart of Niigata, known for its clean, crisp profile.",
-    "body": "Kubota Manju is the pinnacle of Asahi Shuzo’s brewing, representing the tanrei karakuchi style that Niigata is famous for. With a light, dry character and subtle fruit notes, it pairs perfectly with delicate seafood.\n\nThis sake is brewed using Gohyakumangoku rice, polished to 50%, and fermented at low temperatures to develop its refined aroma. The name \"Manju\" (萬寿) means \"ten thousand longevities,\" symbolizing a wish for enduring happiness.",
-    "image": null,
-    "caption": "",
-    "kanji_bg": "久",
-    "tags": [
-      "junmai",
-      "ginjo",
-      "niigata"
     ],
     "issue": 8
   },
