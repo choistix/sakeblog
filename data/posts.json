@@ -1,18 +1,5 @@
 [
   {
-    "slug": "trying",
-    "type": "index",
-    "issue": 9,
-    "title_jp": "lsmds",
-    "title_en": "slknd",
-    "subtitle": "slknd",
-    "body": "trying something new",
-    "image": null,
-    "kanji_bg": "酒",
-    "tags": ["daiginjo", "muroka"],
-    "date": "2026-03-12T22:39:19.153Z"
-  },
-  {
     "slug": "dassai-23-beyond",
     "type": "hero",
     "date": "2024-03-25",
@@ -23,7 +10,11 @@
     "image": null,
     "caption": "",
     "kanji_bg": "獺",
-    "tags": ["daiginjo", "yamaguchi", "fruity"],
+    "tags": [
+      "daiginjo",
+      "yamaguchi",
+      "fruity"
+    ],
     "issue": 8
   },
   {
@@ -49,7 +40,11 @@
     "pairing": "Grilled fish, yakitori, sushi",
     "image": null,
     "kanji_bg": "八",
-    "tags": ["tokubetsu", "junmai", "niigata"],
+    "tags": [
+      "tokubetsu",
+      "junmai",
+      "niigata"
+    ],
     "issue": 8
   },
   {
@@ -63,7 +58,11 @@
     "image": null,
     "caption": "",
     "kanji_bg": "十",
-    "tags": ["daiginjo", "yamagata", "premium"],
+    "tags": [
+      "daiginjo",
+      "yamagata",
+      "premium"
+    ],
     "issue": 8
   },
   {
@@ -89,7 +88,11 @@
     "pairing": "Grilled mackerel, aged cheese",
     "image": null,
     "kanji_bg": "天",
-    "tags": ["yamahai", "junmai", "ishikawa"],
+    "tags": [
+      "yamahai",
+      "junmai",
+      "ishikawa"
+    ],
     "issue": 8
   },
   {
@@ -103,7 +106,11 @@
     "image": null,
     "caption": "",
     "kanji_bg": "久",
-    "tags": ["junmai", "ginjo", "niigata"],
+    "tags": [
+      "junmai",
+      "ginjo",
+      "niigata"
+    ],
     "issue": 8
   },
   {
@@ -129,7 +136,11 @@
     "pairing": "Sashimi, tempura, light salads",
     "image": null,
     "kanji_bg": "菊",
-    "tags": ["junmai", "ginjo", "niigata"],
+    "tags": [
+      "junmai",
+      "ginjo",
+      "niigata"
+    ],
     "issue": 7
   },
   {
@@ -142,7 +153,11 @@
     "body": "Kimoto is the traditional yeast-starter method that predates modern additions of lactic acid. Brewers literally grind the rice mixture with poles to encourage wild lactic acid bacteria, a process that takes weeks but results in sake with deep umami and a robust character.\n\nToday, only a handful of breweries still use the full kimoto method, valuing its ability to create distinctive, age-worthy sake.",
     "image": null,
     "kanji_bg": "醸",
-    "tags": ["kimoto", "traditional", "yamahai"],
+    "tags": [
+      "kimoto",
+      "traditional",
+      "yamahai"
+    ],
     "issue": 7
   },
   {
@@ -155,7 +170,11 @@
     "body": "Yamahai (山廃) is a shortened form of yama-oroshi haishi, a method that skips the labour-intensive grinding of kimoto but still relies on natural lactic acid. It produces sake with pronounced acidity, gamey notes, and a full-bodied texture.\n\nOnce seen as difficult to control, yamahai is now celebrated for the complexity it brings to junmai and ginjo styles.",
     "image": null,
     "kanji_bg": "廃",
-    "tags": ["yamahai", "traditional", "complex"],
+    "tags": [
+      "yamahai",
+      "traditional",
+      "complex"
+    ],
     "issue": 7
   }
 ]
