@@ -140,6 +140,7 @@
     <div class="submit-row">
       <button class="btn-publish" id="hero-submit-btn" onclick="publishHero()">Publish Entry</button>
       <button class="btn-reset" type="button" onclick="resetForm('hero', ['hero-slug','hero-title','hero-subtitle','hero-body','hero-caption']); resetEditState();">Reset</button>
+      <button class="btn-delete" type="button" onclick="deletePost('hero', document.getElementById('hero-slug').value)" id="hero-delete-btn">Delete</button>
       <span id="hero-status"></span>
     </div>
   </div>
@@ -185,6 +186,7 @@
     <div class="submit-row">
       <button class="btn-publish" id="editorial-submit-btn" onclick="publishEditorial()">Publish Entry</button>
        <button class="btn-reset" type="button" onclick="resetForm('editorial', ['editorial-slug','editorial-title','editorial-subtitle','editorial-body','editorial-issue']); resetEditState();">Reset</button>
+      <button class="btn-delete" type="button" onclick="deletePost('editorial', document.getElementById('editorial-slug').value)" id="editorial-delete-btn">Delete</button>
       <span id="editorial-status"></span>
     </div>
   </div>
@@ -261,6 +263,7 @@
     <div class="submit-row">
       <button class="btn-publish" id="note-submit-btn" onclick="publishNote()">Publish Entry</button>
       <button class="btn-reset" type="button" onclick="resetForm('note', ['note-slug','note-title', 'note-name-en', 'note-classification', 'note-brewery', 'note-region', 'note-rice', 'note-seimai', 'note-smv', 'note-acidity', 'note-abv', 'note-tasting', 'note-pairing', 'note-sweetness', 'note-umami', 'note-acidity-bar', 'note-finish']); resetEditState();">Reset</button>
+      <button class="btn-delete" type="button" onclick="deletePost('note', document.getElementById('note-slug').value)" id="note-delete-btn">Delete</button>
       <span id="note-status"></span>
     </div>
   </div>
