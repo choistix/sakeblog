@@ -270,7 +270,9 @@ async function cleanOrphans() {
       return;
     }
 
-    let posts = JSON.parse(atob(indexData.content.replace(/\s/g, '')));
+    // ✅ Use base64ToUtf8 to decode properly
+    const jsonString = base64ToUtf8(indexData.content);
+    let posts = JSON.parse(jsonString);
     const originalLength = posts.length;
     const validPosts = [];
 
@@ -284,7 +286,6 @@ async function cleanOrphans() {
           console.log(`🗑️ Removing orphan: ${post.slug} (file not found)`);
         }
       } catch (err) {
-        // Some other error (network, etc.) – assume file might exist, keep it
         console.warn(`⚠️ Error checking ${post.slug}: ${err.message} – keeping in index`);
         validPosts.push(post);
       }
@@ -295,9 +296,9 @@ async function cleanOrphans() {
       return;
     }
 
-    // Write back the cleaned index
-    const jsonString = JSON.stringify(validPosts, null, 2);
-    const utf8Bytes = new TextEncoder().encode(jsonString);
+    // Write back the cleaned index (using correct encoding)
+    const jsonStringOut = JSON.stringify(validPosts, null, 2);
+    const utf8Bytes = new TextEncoder().encode(jsonStringOut);
     let binary = '';
     utf8Bytes.forEach(b => binary += String.fromCharCode(b));
     const encoded = btoa(binary);
@@ -323,7 +324,6 @@ async function cleanOrphans() {
     }
 
     console.log(`✅ Removed ${originalLength - validPosts.length} orphans.`);
-    // Update local data and dropdowns
     existingPosts = validPosts;
     populateEditDropdowns();
   } catch (err) {
@@ -752,7 +752,8 @@ async function removeOrphanFromIndex(type, slug) {
     const indexData = await ghGetFresh('data/posts.json');
     if (!indexData) return;
 
-    let posts = JSON.parse(atob(indexData.content.replace(/\s/g, '')));
+    // ✅ Use base64ToUtf8
+    let posts = JSON.parse(base64ToUtf8(indexData.content));
     const originalLength = posts.length;
     posts = posts.filter(p => !(p.slug === slug && p.type === type));
 
@@ -761,7 +762,6 @@ async function removeOrphanFromIndex(type, slug) {
       return;
     }
 
-    // Write back the cleaned index
     const jsonString = JSON.stringify(posts, null, 2);
     const utf8Bytes = new TextEncoder().encode(jsonString);
     let binary = '';
