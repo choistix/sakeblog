@@ -76,6 +76,17 @@ async function initAdmin() {
   await cleanOrphans();
 }
 
+// ─────────────────────────────────────────────
+//  UTF-8 Base64 Helper
+// ─────────────────────────────────────────────
+function base64ToUtf8(base64) {
+  const binary = atob(base64.replace(/\s/g, ''));
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) {
+    bytes[i] = binary.charCodeAt(i);
+  }
+  return new TextDecoder().decode(bytes);
+}
 
 // ─────────────────────────────────────────────
 //  ISSUE NUMBERS
@@ -84,7 +95,7 @@ async function loadIssueNumbers() {
   try {
     const data = await ghGetFresh('data/posts.json');
     if (data) {
-      const posts = JSON.parse(atob(data.content.replace(/\s/g, '')));
+      const posts = JSON.parse(base64ToUtf8(data.content));
       const nums  = [...new Set(
         posts.map(p => p.issue).filter(n => typeof n === 'number' && !isNaN(n))
       )].sort((a, b) => a - b);
@@ -122,16 +133,6 @@ function populateIssueDropdowns() {
 // ─────────────────────────────────────────────
 //  EDITING HELPERS
 // ─────────────────────────────────────────────
-
-// Add this helper near the other helpers
-function base64ToUtf8(base64) {
-  const binary = atob(base64.replace(/\s/g, ''));
-  const bytes = new Uint8Array(binary.length);
-  for (let i = 0; i < binary.length; i++) {
-    bytes[i] = binary.charCodeAt(i);
-  }
-  return new TextDecoder().decode(bytes);
-}
 
 async function loadAllPosts() {
   try {
@@ -193,7 +194,7 @@ async function loadPostForEdit(type, slug) {
     const data = await ghGetFresh(`${dir}/${slug}.json`);
     if (!data) throw new Error('Post file not found');
     
-    const post = JSON.parse(atob(data.content.replace(/\s/g, '')));
+    const post = JSON.parse(base64ToUtf8(data.content));
     currentEditSlug = slug;
     currentEditSha = data.sha;
 
@@ -341,7 +342,7 @@ async function updateIndex(indexPath, newPost, oldSlug = null) {
   const existing = await ghGetFresh(indexPath);
   if (!existing) throw new Error('Index file not found');
 
-  let posts = JSON.parse(atob(existing.content.replace(/\s/g, '')));
+  let posts = JSON.parse(base64ToUtf8(existing.content));
 
   if (oldSlug) {
     const index = posts.findIndex(p => p.slug === oldSlug && p.type === newPost.type);
@@ -830,7 +831,7 @@ async function deletePost(type, slug) {
 
     const indexData = await ghGetFresh('data/posts.json');
     if (indexData) {
-      let posts = JSON.parse(atob(indexData.content.replace(/\s/g, '')));
+      let posts = JSON.parse(base64ToUtf8(indexData.content));
       posts = posts.filter(p => !(p.slug === slug && p.type === type));
       
       const jsonString = JSON.stringify(posts, null, 2);
@@ -884,7 +885,7 @@ async function syncIndex() {
         if (file.name.endsWith('.json')) {
           const data = await ghGetFresh(`posts/${file.name}`);
           if (data) {
-            const content = atob(data.content.replace(/\s/g, ''));
+            const content = base64ToUtf8(data.content);
             const post = JSON.parse(content);
             allPosts.push(post);
           }
@@ -901,7 +902,7 @@ async function syncIndex() {
         if (file.name.endsWith('.json')) {
           const data = await ghGetFresh(`notes/${file.name}`);
           if (data) {
-            const content = atob(data.content.replace(/\s/g, ''));
+            const content = base64ToUtf8(data.content);
             const post = JSON.parse(content);
             allPosts.push(post);
           }
@@ -1007,53 +1008,6 @@ async function ghPutJson(path, obj, message) {
   
   return ghPutFile(path, encoded, message);
 }
-
-// Read index, append new post, write back — all sequential to avoid SHA conflicts
-/* async function appendToIndex(indexPath, post) {
-  const existing = await ghGetFresh(indexPath);
-
-  let posts = [];
-  let sha;
-
-  if (existing) {
-    sha   = existing.sha;
-    posts = JSON.parse(atob(existing.content.replace(/\s/g, '')));
-  }
-
-  // Guard against duplicate slugs
-  if (posts.find(p => p.slug === post.slug && p.type === post.type)) {
-    throw new Error(`"${post.slug}" (${post.type}) already exists in the index. Use a different slug.`);
-  }
-
-  posts.push(post);
-  // Most recent first
-  posts.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-  const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(posts, null, 2))));
-  const body    = { message: `Index: add ${post.slug}`, content: encoded, branch: BRANCH };
-  if (sha) body.sha = sha;
-
-  const res = await fetch(
-    `https://api.github.com/repos/${REPO}/contents/${indexPath}`,
-    {
-      method:  'PUT',
-      cache:   'no-store',
-      headers: {
-        Authorization:  `Bearer ${pat}`,
-        Accept:         'application/vnd.github+json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(body)
-    }
-  );
-
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(`Index update → ${res.status}: ${err.message || 'unknown error'}`);
-  }
-  return res.json();
-}
-*/
 
 // ─────────────────────────────────────────────
 //  UTILITIES
