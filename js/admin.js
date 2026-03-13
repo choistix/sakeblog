@@ -73,7 +73,7 @@ async function initAdmin() {
   await loadIssueNumbers();
   await loadAllPosts();
   populateEditDropdowns();
-  await cleanOrphans();  // 👈 Add this line
+  await cleanOrphans();
 }
 
 
@@ -331,49 +331,6 @@ async function cleanOrphans() {
   }
 }
 
-    // Tags
-    document.querySelectorAll(`#${type}-tags .tag-chip`).forEach(c => c.classList.remove('selected'));
-    if (Array.isArray(post.tags)) {
-      post.tags.forEach(tag => {
-        const chip = document.querySelector(`#${type}-tags .tag-chip[data-tag="${tag}"]`);
-        if (chip) chip.classList.add('selected');
-      });
-    }
-
-    // Image handling
-    removeImage(type); // clear current preview
-    if (post.image) {
-      imageState[type].existingPath = post.image;  // custom property
-      const previewWrap = document.getElementById(`${type}-preview-wrap`);
-      const previewImg = document.getElementById(`${type}-preview-img`);
-      previewImg.src = `https://raw.githubusercontent.com/${REPO}/${BRANCH}/${post.image}?t=${Date.now()}`;
-      previewWrap.style.display = 'block';
-    }
-
-    // Note-specific fields
-    if (type === 'note') {
-      document.getElementById('note-name-en').value = post.sake_name_en || '';
-      document.getElementById('note-classification').value = post.classification || '';
-      document.getElementById('note-brewery').value = post.brewery || '';
-      document.getElementById('note-region').value = post.region || post.prefecture || '';
-      document.getElementById('note-rice').value = post.rice_variety || '';
-      document.getElementById('note-seimai').value = post.seimaibuai || '';
-      document.getElementById('note-smv').value = post.nihonshu_do || '';
-      document.getElementById('note-acidity').value = post.acidity || '';
-      document.getElementById('note-abv').value = post.alcohol || '';
-      document.getElementById('note-tasting').value = post.tasting_notes || '';
-      document.getElementById('note-pairing').value = post.pairing || '';
-      document.getElementById('note-sweetness').value = post.sweetness || 0;
-      document.getElementById('note-umami').value = post.umami || 0;
-      document.getElementById('note-acidity-bar').value = post.acidity || 0;
-      document.getElementById('note-finish').value = post.finish || 0;
-    }
-
-  } catch (err) {
-    alert(`Error loading post: ${err.message}`);
-  }
-}
-
 function resetEditState() {
   currentEditSlug = null;
   currentEditSha = null;
@@ -560,33 +517,33 @@ async function publishHero() {
     };
 
     // Determine the file slug and path
-let fileSlug = slug;
-let oldFilePath = null;
-let oldFileSha = null;
+    let fileSlug = slug;
+    let oldFilePath = null;
+    let oldFileSha = null;
 
-if (currentEditSlug && currentEditSlug !== slug) {
-  // Slug changed – we need to delete the old file
-  oldFilePath = `posts/${currentEditSlug}.json`;
-  try {
-    const oldFileData = await ghGetFresh(oldFilePath);
-    if (oldFileData) {
-      oldFileSha = oldFileData.sha;
+    if (currentEditSlug && currentEditSlug !== slug) {
+      // Slug changed – we need to delete the old file
+      oldFilePath = `posts/${currentEditSlug}.json`;
+      try {
+        const oldFileData = await ghGetFresh(oldFilePath);
+        if (oldFileData) {
+          oldFileSha = oldFileData.sha;
+        }
+      } catch (e) {
+        console.warn('Could not fetch old file for deletion:', e);
+      }
+      fileSlug = slug; // new slug
+    } else {
+      fileSlug = currentEditSlug || slug;
     }
-  } catch (e) {
-    console.warn('Could not fetch old file for deletion:', e);
-  }
-  fileSlug = slug; // new slug
-} else {
-  fileSlug = currentEditSlug || slug;
-}
 
-const filePath = `posts/${fileSlug}.json`;
+    const filePath = `posts/${fileSlug}.json`;
 
-// If there's an old file to delete, do it now
-if (oldFilePath && oldFileSha) {
-  setStatus(status, 'Deleting old file…', '');
-  await ghDeleteFile(oldFilePath, oldFileSha, `Delete old file for ${currentEditSlug} (slug changed to ${slug})`);
-}
+    // If there's an old file to delete, do it now
+    if (oldFilePath && oldFileSha) {
+      setStatus(status, 'Deleting old file…', '');
+      await ghDeleteFile(oldFilePath, oldFileSha, `Delete old file for ${currentEditSlug} (slug changed to ${slug})`);
+    }
 
     setStatus(status, currentEditSlug ? 'Updating post file…' : 'Writing post file…', '');
     await ghPutJson(filePath, post, `${currentEditSlug ? 'Update' : 'Add'} hero post: ${slug}`);
@@ -606,8 +563,6 @@ if (oldFilePath && oldFileSha) {
     btn.disabled = false;
   }
 }
-
-
 
 // ─────────────────────────────────────────────
 //  PUBLISH — EDITORIAL POST
@@ -647,33 +602,33 @@ async function publishEditorial() {
     };
 
     // Determine the file slug and path
-let fileSlug = slug;
-let oldFilePath = null;
-let oldFileSha = null;
+    let fileSlug = slug;
+    let oldFilePath = null;
+    let oldFileSha = null;
 
-if (currentEditSlug && currentEditSlug !== slug) {
-  // Slug changed – we need to delete the old file
-  oldFilePath = `posts/${currentEditSlug}.json`;
-  try {
-    const oldFileData = await ghGetFresh(oldFilePath);
-    if (oldFileData) {
-      oldFileSha = oldFileData.sha;
+    if (currentEditSlug && currentEditSlug !== slug) {
+      // Slug changed – we need to delete the old file
+      oldFilePath = `posts/${currentEditSlug}.json`;
+      try {
+        const oldFileData = await ghGetFresh(oldFilePath);
+        if (oldFileData) {
+          oldFileSha = oldFileData.sha;
+        }
+      } catch (e) {
+        console.warn('Could not fetch old file for deletion:', e);
+      }
+      fileSlug = slug; // new slug
+    } else {
+      fileSlug = currentEditSlug || slug;
     }
-  } catch (e) {
-    console.warn('Could not fetch old file for deletion:', e);
-  }
-  fileSlug = slug; // new slug
-} else {
-  fileSlug = currentEditSlug || slug;
-}
 
-const filePath = `posts/${fileSlug}.json`;
+    const filePath = `posts/${fileSlug}.json`;
 
-// If there's an old file to delete, do it now
-if (oldFilePath && oldFileSha) {
-  setStatus(status, 'Deleting old file…', '');
-  await ghDeleteFile(oldFilePath, oldFileSha, `Delete old file for ${currentEditSlug} (slug changed to ${slug})`);
-}
+    // If there's an old file to delete, do it now
+    if (oldFilePath && oldFileSha) {
+      setStatus(status, 'Deleting old file…', '');
+      await ghDeleteFile(oldFilePath, oldFileSha, `Delete old file for ${currentEditSlug} (slug changed to ${slug})`);
+    }
 
     setStatus(status, currentEditSlug ? 'Updating post file…' : 'Writing post file…', '');
     await ghPutJson(filePath, post, `${currentEditSlug ? 'Update' : 'Add'} editorial post: ${slug}`);
@@ -744,36 +699,36 @@ async function publishNote() {
     };
     
     // Determine the file slug and path
-let fileSlug = slug;
-let oldFilePath = null;
-let oldFileSha = null;
+    let fileSlug = slug;
+    let oldFilePath = null;
+    let oldFileSha = null;
 
-if (currentEditSlug && currentEditSlug !== slug) {
-  // Slug changed – we need to delete the old file
-  oldFilePath = `notes/${currentEditSlug}.json`;
-  try {
-    const oldFileData = await ghGetFresh(oldFilePath);
-    if (oldFileData) {
-      oldFileSha = oldFileData.sha;
+    if (currentEditSlug && currentEditSlug !== slug) {
+      // Slug changed – we need to delete the old file
+      oldFilePath = `notes/${currentEditSlug}.json`;
+      try {
+        const oldFileData = await ghGetFresh(oldFilePath);
+        if (oldFileData) {
+          oldFileSha = oldFileData.sha;
+        }
+      } catch (e) {
+        console.warn('Could not fetch old file for deletion:', e);
+      }
+      fileSlug = slug; // new slug
+    } else {
+      fileSlug = currentEditSlug || slug;
     }
-  } catch (e) {
-    console.warn('Could not fetch old file for deletion:', e);
-  }
-  fileSlug = slug; // new slug
-} else {
-  fileSlug = currentEditSlug || slug;
-}
 
-const filePath = `notes/${fileSlug}.json`;
+    const filePath = `notes/${fileSlug}.json`;
 
-// If there's an old file to delete, do it now
-if (oldFilePath && oldFileSha) {
-  setStatus(status, 'Deleting old file…', '');
-  await ghDeleteFile(oldFilePath, oldFileSha, `Delete old file for ${currentEditSlug} (slug changed to ${slug})`);
-}
+    // If there's an old file to delete, do it now
+    if (oldFilePath && oldFileSha) {
+      setStatus(status, 'Deleting old file…', '');
+      await ghDeleteFile(oldFilePath, oldFileSha, `Delete old file for ${currentEditSlug} (slug changed to ${slug})`);
+    }
 
     setStatus(status, 'Writing note file…', '');
-    await ghPutJson(`notes/${slug}.json`, post, `Add tasting note: ${slug}`);
+    await ghPutJson(filePath, post, `Add tasting note: ${slug}`);
 
     setStatus(status, 'Updating index…', '');
     await updateIndex('data/posts.json', post, currentEditSlug);
