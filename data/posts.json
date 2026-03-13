@@ -2,20 +2,18 @@
   {
     "slug": "dassai-23-beyond",
     "type": "hero",
-    "date": "2024-03-25",
+    "issue": 8,
     "title_jp": "獺祭 23 — 磨きの先へ",
-    "title_en": "Dassai 23 — Beyond the Standard",
+    "title_en": "The benchmark for modern daiginjo, polished to 23%.",
     "subtitle": "The benchmark for modern daiginjo, polished to 23%.",
-    "body": "Dassai 23 is the flagship of Asahi Shuzo in Yamaguchi, made with Yamada Nishiki rice polished down to 23%. The result is an intensely fragrant sake with notes of apple, banana, and lychee, yet a crisp, clean finish.\n\nThis sake revolutionised the industry by proving that high polishing could produce a consistent, fruit-forward style that appeals globally. It is best enjoyed slightly chilled.",
-    "image": null,
+    "body": "Dassai 23 is the flagship of Asahi Shuzo in Yamaguchi, made with Yamada Nishiki rice polished down to 23%. The result is an intensely fragrant sake with notes of apple, banana, and lychee, yet a crisp, clean finish.\n\nThis sake revolutionised the industry by proving that high polishing could produce a consistent, fruit‑forward style that appeals globally. It is best enjoyed slightly chilled.",
+    "image": "assets/images/dassai-23-beyond-dassai23.jpg",
     "caption": "",
-    "kanji_bg": "獺",
+    "kanji_bg": "酒",
     "tags": [
-      "daiginjo",
-      "yamaguchi",
-      "fruity"
+      "daiginjo"
     ],
-    "issue": 8
+    "date": "2026-03-13T01:43:24.275Z"
   },
   {
     "slug": "hakkaisan-tokubetsu-junmai",
