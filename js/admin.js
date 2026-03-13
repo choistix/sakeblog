@@ -75,7 +75,7 @@ async function initAdmin() {
   populateEditDropdowns();
   await cleanOrphans();  // 👈 Add this line
 }
-}
+
 
 // ─────────────────────────────────────────────
 //  ISSUE NUMBERS
@@ -197,7 +197,54 @@ async function loadPostForEdit(type, slug) {
     currentEditSlug = slug;
     currentEditSha = data.sha;
 
-    // ... rest of existing population code ...
+    // Populate common fields
+    document.getElementById(`${type}-slug`).value = post.slug || '';
+    document.getElementById(`${type}-title`).value = post.title_jp || '';
+    if (type !== 'note') {
+      document.getElementById(`${type}-subtitle`).value = post.subtitle || post.title_en || '';
+      document.getElementById(`${type}-body`).value = post.body || '';
+    }
+
+    const issueSelect = document.getElementById(`${type}-issue`);
+    if (issueSelect) issueSelect.value = post.issue || '';
+
+    // Tags
+    document.querySelectorAll(`#${type}-tags .tag-chip`).forEach(c => c.classList.remove('selected'));
+    if (Array.isArray(post.tags)) {
+      post.tags.forEach(tag => {
+        const chip = document.querySelector(`#${type}-tags .tag-chip[data-tag="${tag}"]`);
+        if (chip) chip.classList.add('selected');
+      });
+    }
+
+    // Image handling
+    removeImage(type); // clear current preview
+    if (post.image) {
+      imageState[type].existingPath = post.image;  // custom property
+      const previewWrap = document.getElementById(`${type}-preview-wrap`);
+      const previewImg = document.getElementById(`${type}-preview-img`);
+      previewImg.src = `https://raw.githubusercontent.com/${REPO}/${BRANCH}/${post.image}?t=${Date.now()}`;
+      previewWrap.style.display = 'block';
+    }
+
+    // Note-specific fields
+    if (type === 'note') {
+      document.getElementById('note-name-en').value = post.sake_name_en || '';
+      document.getElementById('note-classification').value = post.classification || '';
+      document.getElementById('note-brewery').value = post.brewery || '';
+      document.getElementById('note-region').value = post.region || post.prefecture || '';
+      document.getElementById('note-rice').value = post.rice_variety || '';
+      document.getElementById('note-seimai').value = post.seimaibuai || '';
+      document.getElementById('note-smv').value = post.nihonshu_do || '';
+      document.getElementById('note-acidity').value = post.acidity || '';
+      document.getElementById('note-abv').value = post.alcohol || '';
+      document.getElementById('note-tasting').value = post.tasting_notes || '';
+      document.getElementById('note-pairing').value = post.pairing || '';
+      document.getElementById('note-sweetness').value = post.sweetness || 0;
+      document.getElementById('note-umami').value = post.umami || 0;
+      document.getElementById('note-acidity-bar').value = post.acidity || 0;
+      document.getElementById('note-finish').value = post.finish || 0;
+    }
 
   } catch (err) {
     console.error('Error loading post:', err);
@@ -283,9 +330,6 @@ async function cleanOrphans() {
     console.error('❌ Orphan cleanup failed:', err);
   }
 }
-
-    const issueSelect = document.getElementById(`${type}-issue`);
-    if (issueSelect) issueSelect.value = post.issue || '';
 
     // Tags
     document.querySelectorAll(`#${type}-tags .tag-chip`).forEach(c => c.classList.remove('selected'));
