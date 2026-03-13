@@ -6,7 +6,7 @@
 <title>清酒手帖 — Seishu Techou</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Noto+Serif+JP:wght@400;600;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Noto+Serif+JP:wght@400;600;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
@@ -19,26 +19,28 @@
 <div class="site-wrap">
   <main class="main-col">
 
-    <!-- MASTHEAD -->
+    <!-- MASTHEAD (template style) -->
     <header class="masthead">
       <div class="masthead-left">
-        <span class="en">Field Notes on Sake</span>
-        <span class="jp">日本酒の記録</span>
+        <span class="jp">清酒手帖 — 日本酒の世界</span>
+        <span class="en">Field Notes on Japanese Sake</span>
       </div>
       <a href="index.html" class="masthead-logo">
-        清酒手帖
+        酒
         <span>Seishu Techou</span>
       </a>
       <nav class="masthead-right">
         <a href="#tasting-notes">Tasting Notes</a>
         <a href="#features">Features</a>
         <a href="#regions">Regions</a>
+        <a href="#">About</a>
       </nav>
     </header>
 
-    <!-- DYNAMIC CONTENT -->
+    <!-- DYNAMIC HERO SECTION -->
     <div id="hero-section"></div>
 
+    <!-- FEATURES SECTION (dynamic) -->
     <div id="features-section" class="index-section">
       <div class="section-header">
         <div class="section-header-num">01</div>
@@ -47,6 +49,7 @@
       <div id="features-rows"></div>
     </div>
 
+    <!-- TASTING NOTES SECTION (dynamic) -->
     <div class="index-section" id="tasting-notes">
       <div class="section-header">
         <div class="section-header-num">02</div>
@@ -57,7 +60,7 @@
       </div>
     </div>
 
-    <!-- REGIONS STRIP (static) -->
+    <!-- REGIONS STRIP (static, template style) -->
     <div class="index-section" id="regions">
       <div class="section-header">
         <div class="section-header-num">03</div>
@@ -68,27 +71,27 @@
         <div class="region-card">
           <div class="region-name-jp">新潟</div>
           <div class="region-name-en">Niigata</div>
-          <div class="region-count">Tanrei Karakuchi</div>
+          <div class="region-count">24 Reviews</div>
           <div class="region-tags">
+            <span class="region-tag">Tanrei Karakuchi</span>
             <span class="region-tag">Clean</span>
             <span class="region-tag">Dry</span>
-            <span class="region-tag">Elegant</span>
           </div>
         </div>
         <div class="region-card">
           <div class="region-name-jp">京都</div>
           <div class="region-name-en">Kyoto</div>
-          <div class="region-count">Fushimizumi</div>
+          <div class="region-count">18 Reviews</div>
           <div class="region-tags">
+            <span class="region-tag">Fushimizumi</span>
             <span class="region-tag">Soft Water</span>
             <span class="region-tag">Elegant</span>
-            <span class="region-tag">Refined</span>
           </div>
         </div>
         <div class="region-card">
           <div class="region-name-jp">山形</div>
           <div class="region-name-en">Yamagata</div>
-          <div class="region-count">Ginjo Heartland</div>
+          <div class="region-count">15 Reviews</div>
           <div class="region-tags">
             <span class="region-tag">Fruity</span>
             <span class="region-tag">Aromatic</span>
@@ -98,27 +101,27 @@
         <div class="region-card">
           <div class="region-name-jp">兵庫</div>
           <div class="region-name-en">Hyogo</div>
-          <div class="region-count">Nada-Gogo</div>
+          <div class="region-count">21 Reviews</div>
           <div class="region-tags">
+            <span class="region-tag">Nada-Gogo</span>
             <span class="region-tag">Hard Water</span>
             <span class="region-tag">Bold</span>
-            <span class="region-tag">Robust</span>
           </div>
         </div>
         <div class="region-card">
           <div class="region-name-jp">広島</div>
           <div class="region-name-en">Hiroshima</div>
-          <div class="region-count">Saijo District</div>
+          <div class="region-count">12 Reviews</div>
           <div class="region-tags">
+            <span class="region-tag">Saijo District</span>
             <span class="region-tag">Umami-rich</span>
             <span class="region-tag">Full</span>
-            <span class="region-tag">Soft</span>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- FOOTER -->
+    <!-- FOOTER (template style) -->
     <footer class="site-footer">
       <div class="footer-mark">
         <div class="footer-mark-inner">酒</div>
@@ -129,6 +132,7 @@
           <a href="#tasting-notes">Tasting Notes Archive</a>
           <a href="#features">Features</a>
           <a href="#regions">Regional Guides</a>
+          <a href="#">Sake 101</a>
         </div>
       </div>
       <div class="footer-col">
@@ -136,9 +140,8 @@
         <div class="footer-links">
           <a href="#">Junmai Daiginjo</a>
           <a href="#">Natural Sake</a>
-          <a href="#">Kimoto &amp; Yamahai</a>
+          <a href="#">Kimoto & Yamahai</a>
           <a href="#">Aged Koshu</a>
-          <a href="#">Sparkling Sake</a>
         </div>
       </div>
       <div class="footer-col">
@@ -183,24 +186,20 @@
     return;
   }
 
-  // Accept both old and new type strings
   const heroes = posts.filter(p => p.type === 'hero');
   const rows   = posts.filter(p => p.type === 'index' || p.type === 'index_row');
   const notes  = posts.filter(p => p.type === 'note'  || p.type === 'tasting_note');
 
-  // HERO: show latest hero entry
   if (heroes.length > 0) {
     heroSection.innerHTML = Renderer.heroIndex(heroes[0]);
   }
 
-  // FEATURES: editorial rows
   if (rows.length > 0) {
     featuresRows.innerHTML = rows.map(p => Renderer.indexRow(p)).join('');
   } else {
     featuresSection.style.display = 'none';
   }
 
-  // TASTING NOTES: grid
   if (notes.length > 0) {
     tastingGrid.innerHTML = notes.map(p => Renderer.tastingCard(p)).join('');
   } else {
