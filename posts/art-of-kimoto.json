@@ -1,16 +1,13 @@
 {
   "slug": "art-of-kimoto",
-  "type": "index",
-  "issue": 7,
-  "title_jp": "çéã®ææ³ â ä¼çµ±ãé¸ã",
-  "title_en": "A labourâintensive method that yields complex, earthy flavours.",
-  "subtitle": "A labourâintensive method that yields complex, earthy flavours.",
-  "body": "Kimoto is the traditional yeastâstarter method that predates modern additions of lactic acid. Brewers literally grind the rice mixture with poles to encourage wild lactic acid bacteria, a process that takes weeks but results in sake with deep YUM! and a robust character.\n\nToday, only a handful of breweries still use the full kimoto method, valuing its ability to create distinctive, ageâworthy sake.",
+  "type": "index_row",
+  "date": "2024-03-10",
+  "title_jp": "生酛の技法 — 伝統を醸す",
+  "title_en": "The Art of Kimoto",
+  "subtitle": "A labour‑intensive method that yields complex, earthy flavours.",
+  "body": "Kimoto is the traditional yeast‑starter method that predates modern additions of lactic acid. Brewers literally grind the rice mixture with poles to encourage wild lactic acid bacteria, a process that takes weeks but results in sake with deep umami and a robust character.\n\nToday, only a handful of breweries still use the full kimoto method, valuing its ability to create distinctive, age‑worthy sake.",
   "image": null,
-  "kanji_bg": "酒",
-  "tags": [
-    "yamahai",
-    "kimoto"
-  ],
-  "date": "2026-03-13T00:37:32.022Z"
+  "kanji_bg": "醸",
+  "tags": ["kimoto", "traditional", "yamahai"],
+  "issue": 7
 }
