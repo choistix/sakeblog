@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>清酒手帖 — Regions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Noto+Serif+JP:wght@400;600;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  .regions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 2rem;
+    padding: 3rem;
+  }
+  .region-card {
+    background: var(--paper-2);
+    border: var(--border);
+    padding: 1.5rem;
+    text-align: center;
+    transition: transform 0.2s;
+  }
+  .region-card:hover {
+    transform: translateY(-5px);
+  }
+  .region-name-jp {
+    font-family: var(--font-jp);
+    font-size: 1.8rem;
+    font-weight: 900;
+    margin-bottom: 0.5rem;
+  }
+  .region-name-en {
+    font-family: var(--font-en);
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--ink-muted);
+    margin-bottom: 1rem;
+  }
+  .region-link {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: var(--red);
+  }
+</style>
+</head>
+<body>
+
+<div class="reg tl"></div>
+<div class="reg tr"></div>
+<div class="reg bl"></div>
+<div class="reg br"></div>
+
+<div class="site-wrap">
+  <main class="main-col">
+
+    <header class="masthead">...</header>
+
+    <div class="index-section">
+      <div class="section-header">
+        <div class="section-header-num">03</div>
+        <div class="section-header-title">地域別 — Browse by Region</div>
+      </div>
+
+      <div class="regions-grid" id="regions-grid">
+        <!-- populated by JS -->
+      </div>
+    </div>
+
+    <footer class="site-footer">...</footer>
+  </main>
+  <aside class="spine">...</aside>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script>
+(async function() {
+  try {
+    const posts = await API.getPosts();
+    const notes = posts.filter(p => p.type === 'note' || p.type === 'tasting_note');
+    const regions = [...new Set(notes.map(n => n.prefecture).filter(Boolean))].sort();
+
+    const grid = document.getElementById('regions-grid');
+    if (regions.length === 0) {
+      grid.innerHTML = '<div class="loading-state">No regions found.</div>';
+      return;
+    }
+
+    let html = '';
+    regions.forEach(region => {
+      const count = notes.filter(n => n.prefecture === region).length;
+      html += `
+        <a href="tasting-notes.html?prefecture=${encodeURIComponent(region)}" class="region-card">
+          <div class="region-name-jp">${region}</div>
+          <div class="region-name-en">${region}</div>
+          <div class="region-link">${count} notes →</div>
+        </a>
+      `;
+    });
+    grid.innerHTML = html;
+  } catch (err) {
+    document.getElementById('regions-grid').innerHTML = `<div class="error-state">Error loading regions: ${err.message}</div>`;
+  }
+})();
+</script>
+</body>
+</html>

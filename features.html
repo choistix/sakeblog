@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>清酒手帖 — Features Archive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Noto+Serif+JP:wght@400;600;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  /* Same archive styles as tasting-notes.html */
+  .archive-mode {
+    --bg-dark: #1a1814;
+    --surface-1: #2a2722;
+    --surface-2: #3a332c;
+    --text-light: #e8e3d8;
+    --text-muted: #a8a090;
+    --accent-primary: #b8332a;
+    --accent-secondary: #c9a84c;
+    --border-dark: 2px solid var(--accent-primary);
+    --border-light: 1px solid var(--accent-secondary);
+    --font-sans: 'Inter', sans-serif;
+  }
+
+  .archive-board {
+    display: grid;
+    grid-template-columns: minmax(380px, 40%) 60px 1fr;
+    min-height: 80vh;
+    background-color: var(--bg-dark);
+    border: var(--border-dark);
+    margin: 2rem;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+  }
+
+  .panel-left {
+    background: var(--surface-1);
+    padding: 1.5rem;
+    border-right: var(--border-light);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .filter-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--accent-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding-bottom: 1rem;
+    border-bottom: var(--border-light);
+    margin-bottom: 1.5rem;
+  }
+
+  .filter-group {
+    margin-bottom: 1.5rem;
+    border-bottom: 1px dashed var(--accent-secondary);
+    padding-bottom: 1rem;
+  }
+
+  .filter-group h3 {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--accent-primary);
+    margin-bottom: 0.8rem;
+    letter-spacing: 0.1em;
+  }
+
+  .filter-group select,
+  .filter-group input[type="range"] {
+    width: 100%;
+    padding: 0.4rem;
+    background: var(--surface-2);
+    color: var(--text-light);
+    border: 1px solid var(--accent-secondary);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+  }
+
+  .filter-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .filter-actions button {
+    flex: 1;
+    padding: 0.6rem;
+    background: var(--accent-primary);
+    color: var(--text-light);
+    border: none;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .filter-actions button.reset {
+    background: var(--surface-2);
+    color: var(--text-muted);
+  }
+
+  .results-list {
+    flex: 1;
+    overflow-y: auto;
+    margin-top: 1rem;
+    padding-right: 0.5rem;
+  }
+
+  .result-item {
+    display: grid;
+    grid-template-columns: 2rem 1fr;
+    gap: 0.8rem;
+    padding: 1rem 0;
+    border-bottom: 1px dashed var(--accent-secondary);
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .result-item:hover {
+    background: var(--surface-2);
+  }
+
+  .item-num {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--accent-secondary);
+    font-weight: 700;
+    padding-top: 0.2rem;
+  }
+
+  .item-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .item-title {
+    font-family: var(--font-jp);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-light);
+  }
+
+  .item-sub {
+    font-family: var(--font-en);
+    font-size: 0.85rem;
+    font-style: italic;
+    color: var(--text-muted);
+  }
+
+  .item-meta {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--accent-primary);
+    display: flex;
+    gap: 1rem;
+  }
+
+  .panel-spine { /* same as tasting-notes */ }
+  .panel-feature { /* same as tasting-notes */ }
+  .feature-img, .feature-overlay { /* same */ }
+</style>
+</head>
+<body class="archive-mode">
+
+<div class="reg tl"></div>
+<div class="reg tr"></div>
+<div class="reg bl"></div>
+<div class="reg br"></div>
+
+<div class="site-wrap">
+  <main class="main-col">
+
+    <!-- MASTHEAD (same) -->
+    <header class="masthead">
+      <div class="masthead-left">
+        <span class="jp">清酒手帖 — 日本酒の世界</span>
+        <span class="en">Field Notes on Japanese Sake</span>
+      </div>
+      <a href="index.html" class="masthead-logo">
+        酒
+        <span>Seishu Techou</span>
+      </a>
+      <nav class="masthead-right">
+        <a href="tasting-notes.html">Tasting Notes</a>
+        <a href="features.html">Features</a>
+        <a href="regions.html">Regions</a>
+        <a href="#">About</a>
+      </nav>
+    </header>
+
+    <div class="archive-board">
+      <!-- LEFT -->
+      <div class="panel-left">
+        <div class="filter-header">
+          <span>FILTERS</span>
+          <span id="result-count">0</span>
+        </div>
+
+        <div class="filter-group">
+          <h3>Prefecture</h3>
+          <select id="filter-prefecture">
+            <option value="">All</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <h3>Brewery</h3>
+          <select id="filter-brewery">
+            <option value="">All</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <h3>Issue</h3>
+          <select id="filter-issue">
+            <option value="">All</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <h3>Tags</h3>
+          <select id="filter-tags">
+            <option value="">All</option>
+          </select>
+        </div>
+
+        <div class="filter-actions">
+          <button id="apply-filters">Apply</button>
+          <button id="reset-filters" class="reset">Reset</button>
+        </div>
+
+        <div class="results-list" id="results-list"></div>
+      </div>
+
+      <!-- MIDDLE spine -->
+      <div class="panel-spine">
+        <div class="spine-decor"></div>
+        <div class="spine-text">特集</div>
+        <div class="spine-vol">VOL. 07</div>
+        <div class="spine-decor"></div>
+      </div>
+
+      <!-- RIGHT feature -->
+      <div class="panel-feature" id="feature-panel">
+        <div class="feature-img" id="feature-img"></div>
+        <div class="feature-overlay" id="feature-overlay">
+          <div class="feature-label">FEATURED ARTICLE</div>
+          <div class="feature-title" id="feature-title">Loading...</div>
+          <div class="feature-sub" id="feature-sub"></div>
+          <div class="feature-detail" id="feature-detail"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER (same) -->
+    <footer class="site-footer">...</footer>
+
+  </main>
+  <aside class="spine">...</aside>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/render.js"></script>
+<script>
+(async function() {
+  let allFeatures = [];
+  try {
+    const posts = await API.getPosts();
+    allFeatures = posts.filter(p => p.type === 'index' || p.type === 'index_row');
+  } catch (err) {
+    document.getElementById('results-list').innerHTML = `<div class="error-state">Failed to load features: ${err.message}</div>`;
+    return;
+  }
+
+  // Populate filter dropdowns
+  const prefectures = [...new Set(allFeatures.map(f => f.prefecture).filter(Boolean))].sort();
+  const breweries = [...new Set(allFeatures.map(f => f.brewery).filter(Boolean))].sort();
+  const issues = [...new Set(allFeatures.map(f => f.issue).filter(v => v !== undefined && v !== null))].sort((a,b) => a - b);
+  const allTags = [...new Set(allFeatures.flatMap(f => f.tags || []))].sort();
+
+  const populateSelect = (id, values) => {
+    const select = document.getElementById(id);
+    values.forEach(v => {
+      const opt = document.createElement('option');
+      opt.value = v;
+      opt.textContent = v;
+      select.appendChild(opt);
+    });
+  };
+  populateSelect('filter-prefecture', prefectures);
+  populateSelect('filter-brewery', breweries);
+  populateSelect('filter-issue', issues);
+  populateSelect('filter-tags', allTags);
+
+  // Filter function
+  const filterFeatures = () => {
+    const prefecture = document.getElementById('filter-prefecture').value;
+    const brewery = document.getElementById('filter-brewery').value;
+    const issue = document.getElementById('filter-issue').value;
+    const tag = document.getElementById('filter-tags').value;
+
+    return allFeatures.filter(f => {
+      if (prefecture && f.prefecture !== prefecture) return false;
+      if (brewery && f.brewery !== brewery) return false;
+      if (issue && f.issue != issue) return false;
+      if (tag && (!f.tags || !f.tags.includes(tag))) return false;
+      return true;
+    });
+  };
+
+  // Render list and feature
+  const renderList = (filtered) => {
+    const listEl = document.getElementById('results-list');
+    document.getElementById('result-count').textContent = filtered.length;
+
+    if (filtered.length === 0) {
+      listEl.innerHTML = '<div class="no-results">No features match your filters.</div>';
+      return;
+    }
+
+    let html = '';
+    filtered.forEach((f, idx) => {
+      html += `
+        <div class="result-item" data-slug="${f.slug}">
+          <div class="item-num">${(idx+1).toString().padStart(2,'0')}</div>
+          <div class="item-content">
+            <div class="item-title">${f.title_jp || ''}</div>
+            <div class="item-sub">${f.title_en || f.subtitle || ''}</div>
+            <div class="item-meta">
+              <span>${f.prefecture || '—'}</span>
+              <span>${f.brewery || '—'}</span>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+    listEl.innerHTML = html;
+
+    document.querySelectorAll('.result-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const slug = item.dataset.slug;
+        const feature = filtered.find(f => f.slug === slug);
+        if (feature) {
+          document.getElementById('feature-title').textContent = feature.title_jp || '';
+          document.getElementById('feature-sub').textContent = feature.title_en || feature.subtitle || '';
+          const detail = `${feature.prefecture || ''} | ${feature.brewery || ''} | Issue ${feature.issue || ''}`;
+          document.getElementById('feature-detail').textContent = detail;
+          const imgSrc = feature.image ? `https://raw.githubusercontent.com/${SITE_CONFIG.owner}/${SITE_CONFIG.repo}/${SITE_CONFIG.branch}/${feature.image}` : '';
+          if (imgSrc) {
+            document.getElementById('feature-img').style.backgroundImage = `url('${imgSrc}')`;
+          } else {
+            document.getElementById('feature-img').style.backgroundImage = '';
+          }
+        }
+      });
+    });
+
+    if (filtered.length > 0) {
+      document.querySelector('.result-item').click();
+    }
+  };
+
+  document.getElementById('apply-filters').addEventListener('click', () => {
+    renderList(filterFeatures());
+  });
+
+  document.getElementById('reset-filters').addEventListener('click', () => {
+    document.getElementById('filter-prefecture').value = '';
+    document.getElementById('filter-brewery').value = '';
+    document.getElementById('filter-issue').value = '';
+    document.getElementById('filter-tags').value = '';
+    renderList(filterFeatures());
+  });
+
+  renderList(allFeatures);
+})();
+</script>
+</body>
+</html>

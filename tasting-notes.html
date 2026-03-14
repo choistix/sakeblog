@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>清酒手帖 — Tasting Notes Archive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Noto+Serif+JP:wght@400;600;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  /* Archive-specific styles (inverted) */
+  .archive-mode {
+    --bg-dark: #1a1814;
+    --surface-1: #2a2722;
+    --surface-2: #3a332c;
+    --text-light: #e8e3d8;
+    --text-muted: #a8a090;
+    --accent-primary: #b8332a;
+    --accent-secondary: #c9a84c;
+    --border-dark: 2px solid var(--accent-primary);
+    --border-light: 1px solid var(--accent-secondary);
+    --font-sans: 'Inter', sans-serif;
+  }
+
+  .archive-board {
+    display: grid;
+    grid-template-columns: minmax(380px, 40%) 60px 1fr;
+    min-height: 80vh;
+    background-color: var(--bg-dark);
+    border: var(--border-dark);
+    margin: 2rem;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+  }
+
+  /* Left panel – filters & list */
+  .panel-left {
+    background: var(--surface-1);
+    padding: 1.5rem;
+    border-right: var(--border-light);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .filter-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--accent-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding-bottom: 1rem;
+    border-bottom: var(--border-light);
+    margin-bottom: 1.5rem;
+  }
+
+  .filter-group {
+    margin-bottom: 1.5rem;
+    border-bottom: 1px dashed var(--accent-secondary);
+    padding-bottom: 1rem;
+  }
+
+  .filter-group h3 {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--accent-primary);
+    margin-bottom: 0.8rem;
+    letter-spacing: 0.1em;
+  }
+
+  .filter-group select,
+  .filter-group input[type="range"] {
+    width: 100%;
+    padding: 0.4rem;
+    background: var(--surface-2);
+    color: var(--text-light);
+    border: 1px solid var(--accent-secondary);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+  }
+
+  .range-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+  }
+
+  .range-row span {
+    min-width: 2.5rem;
+  }
+
+  .filter-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .filter-actions button {
+    flex: 1;
+    padding: 0.6rem;
+    background: var(--accent-primary);
+    color: var(--text-light);
+    border: none;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+
+  .filter-actions button.reset {
+    background: var(--surface-2);
+    color: var(--text-muted);
+  }
+
+  .filter-actions button:hover {
+    opacity: 0.8;
+  }
+
+  .results-list {
+    flex: 1;
+    overflow-y: auto;
+    margin-top: 1rem;
+    padding-right: 0.5rem;
+  }
+
+  .result-item {
+    display: grid;
+    grid-template-columns: 2rem 1fr;
+    gap: 0.8rem;
+    padding: 1rem 0;
+    border-bottom: 1px dashed var(--accent-secondary);
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .result-item:hover {
+    background: var(--surface-2);
+  }
+
+  .item-num {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--accent-secondary);
+    font-weight: 700;
+    padding-top: 0.2rem;
+  }
+
+  .item-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .item-title {
+    font-family: var(--font-jp);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-light);
+  }
+
+  .item-sub {
+    font-family: var(--font-en);
+    font-size: 0.85rem;
+    font-style: italic;
+    color: var(--text-muted);
+  }
+
+  .item-meta {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--accent-primary);
+    display: flex;
+    gap: 1rem;
+  }
+
+  /* Middle spine */
+  .panel-spine {
+    background: var(--surface-2);
+    border-left: var(--border-light);
+    border-right: var(--border-light);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem 0;
+  }
+
+  .spine-decor {
+    width: 20px;
+    height: 20px;
+    border: 1px solid var(--accent-secondary);
+    border-radius: 50%;
+    position: relative;
+  }
+  .spine-decor::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 4px;
+    height: 4px;
+    background: var(--accent-secondary);
+    border-radius: 50%;
+  }
+
+  .spine-text {
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    font-family: var(--font-jp);
+    font-size: 1.2rem;
+    color: var(--accent-primary);
+    letter-spacing: 0.3em;
+  }
+
+  .spine-vol {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--text-muted);
+  }
+
+  /* Right panel – feature */
+  .panel-feature {
+    position: relative;
+    background: var(--surface-1);
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    padding: 2rem;
+  }
+
+  .feature-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.3;
+    filter: grayscale(100%) sepia(40%) hue-rotate(5deg) contrast(1.2);
+    z-index: 1;
+  }
+
+  .feature-overlay {
+    position: relative;
+    z-index: 2;
+    background: rgba(26,24,20,0.8);
+    backdrop-filter: blur(4px);
+    padding: 1.5rem;
+    border-left: 4px solid var(--accent-primary);
+    max-width: 80%;
+  }
+
+  .feature-label {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--accent-secondary);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+  }
+
+  .feature-title {
+    font-family: var(--font-jp);
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-light);
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+  }
+
+  .feature-sub {
+    font-family: var(--font-en);
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+  }
+
+  .feature-detail {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    display: flex;
+    gap: 1rem;
+  }
+
+  .no-feature {
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .archive-board { grid-template-columns: 1fr; margin: 1rem; }
+    .panel-spine { display: none; }
+    .panel-feature { display: none; }
+  }
+</style>
+</head>
+<body class="archive-mode">
+
+<div class="reg tl"></div>
+<div class="reg tr"></div>
+<div class="reg bl"></div>
+<div class="reg br"></div>
+
+<div class="site-wrap">
+  <main class="main-col">
+
+    <!-- MASTHEAD (same as index) -->
+    <header class="masthead">
+      <div class="masthead-left">
+        <span class="jp">清酒手帖 — 日本酒の世界</span>
+        <span class="en">Field Notes on Japanese Sake</span>
+      </div>
+      <a href="index.html" class="masthead-logo">
+        酒
+        <span>Seishu Techou</span>
+      </a>
+      <nav class="masthead-right">
+        <a href="tasting-notes.html">Tasting Notes</a>
+        <a href="features.html">Features</a>
+        <a href="regions.html">Regions</a>
+        <a href="#">About</a>
+      </nav>
+    </header>
+
+    <!-- Archive Board -->
+    <div class="archive-board">
+      <!-- LEFT: filters + list -->
+      <div class="panel-left">
+        <div class="filter-header">
+          <span>FILTERS</span>
+          <span id="result-count">0</span>
+        </div>
+
+        <div class="filter-group">
+          <h3>Classification</h3>
+          <select id="filter-classification">
+            <option value="">All</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <h3>Brewery</h3>
+          <select id="filter-brewery">
+            <option value="">All</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <h3>Prefecture</h3>
+          <select id="filter-prefecture">
+            <option value="">All</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <h3>Rice Variety</h3>
+          <select id="filter-rice">
+            <option value="">All</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <h3>Seimaibuai</h3>
+          <select id="filter-seimaibuai">
+            <option value="">All</option>
+            <option value="<50">&lt; 50%</option>
+            <option value="50-60">50% – 60%</option>
+            <option value="61-70">61% – 70%</option>
+            <option value=">70">&gt; 70%</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <h3>SMV (Nihonshu-do)</h3>
+          <div class="range-row">
+            <span id="smv-min-val">-15</span>
+            <input type="range" id="filter-smv-min" min="-15" max="15" step="0.5" value="-15">
+            <span>to</span>
+            <input type="range" id="filter-smv-max" min="-15" max="15" step="0.5" value="15">
+            <span id="smv-max-val">15</span>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <h3>Acidity</h3>
+          <div class="range-row">
+            <span id="acidity-min-val">0</span>
+            <input type="range" id="filter-acidity-min" min="0" max="100" step="1" value="0">
+            <span>to</span>
+            <input type="range" id="filter-acidity-max" min="0" max="100" step="1" value="100">
+            <span id="acidity-max-val">100</span>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <h3>ABV (%)</h3>
+          <div class="range-row">
+            <span id="abv-min-val">0</span>
+            <input type="range" id="filter-abv-min" min="0" max="25" step="0.5" value="0">
+            <span>to</span>
+            <input type="range" id="filter-abv-max" min="0" max="25" step="0.5" value="25">
+            <span id="abv-max-val">25</span>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <h3>Issue</h3>
+          <select id="filter-issue">
+            <option value="">All</option>
+          </select>
+        </div>
+
+        <div class="filter-actions">
+          <button id="apply-filters">Apply</button>
+          <button id="reset-filters" class="reset">Reset</button>
+        </div>
+
+        <div class="results-list" id="results-list">
+          <!-- populated by JS -->
+        </div>
+      </div>
+
+      <!-- MIDDLE: spine -->
+      <div class="panel-spine">
+        <div class="spine-decor"></div>
+        <div class="spine-text">酒</div>
+        <div class="spine-vol">VOL. 07</div>
+        <div class="spine-decor"></div>
+      </div>
+
+      <!-- RIGHT: feature panel -->
+      <div class="panel-feature" id="feature-panel">
+        <div class="feature-img" id="feature-img"></div>
+        <div class="feature-overlay" id="feature-overlay">
+          <div class="feature-label">FEATURED NOTE</div>
+          <div class="feature-title" id="feature-title">Loading...</div>
+          <div class="feature-sub" id="feature-sub"></div>
+          <div class="feature-detail" id="feature-detail"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER (same as index) -->
+    <footer class="site-footer">
+      <div class="footer-mark">
+        <div class="footer-mark-inner">酒</div>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-head">Navigate</div>
+        <div class="footer-links">
+          <a href="tasting-notes.html">Tasting Notes Archive</a>
+          <a href="features.html">Features</a>
+          <a href="regions.html">Regional Guides</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-head">Topics</div>
+        <div class="footer-links">
+          <a href="#">Junmai Daiginjo</a>
+          <a href="#">Natural Sake</a>
+          <a href="#">Kimoto &amp; Yamahai</a>
+          <a href="#">Aged Koshu</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-head">About</div>
+        <div class="footer-links">
+          <a href="#">The Editor</a>
+          <a href="#">Contact</a>
+        </div>
+      </div>
+      <div class="footer-colophon">
+        <span class="footer-colophon-text">清酒手帖 Seishu Techou — Field Notes on Japanese Sake</span>
+        <span class="footer-colophon-text">Est. 2022 — Published Seasonally</span>
+      </div>
+    </footer>
+
+  </main>
+
+  <aside class="spine">
+    <div class="spine-title">清酒手帖</div>
+    <div class="spine-rule"></div>
+    <div class="spine-sub">Sake Field Notes</div>
+  </aside>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/render.js"></script>
+<script>
+(async function() {
+  // ---------- Helper functions ----------
+  const parseSMV = (val) => {
+    if (val === undefined || val === null || val === '') return null;
+    return parseFloat(val.toString().replace('+', ''));
+  };
+  const parseSeimaibuai = (val) => {
+    if (!val) return null;
+    return parseFloat(val.replace('%', ''));
+  };
+  const parseABV = (val) => {
+    if (!val) return null;
+    return parseFloat(val.replace('%', ''));
+  };
+
+  // ---------- Fetch data ----------
+  let allNotes = [];
+  try {
+    const posts = await API.getPosts();
+    allNotes = posts.filter(p => p.type === 'note' || p.type === 'tasting_note');
+  } catch (err) {
+    document.getElementById('results-list').innerHTML = `<div class="error-state">Failed to load notes: ${err.message}</div>`;
+    return;
+  }
+
+  // ---------- Populate filter dropdowns ----------
+  const classifications = [...new Set(allNotes.map(n => n.classification).filter(Boolean))].sort();
+  const breweries = [...new Set(allNotes.map(n => n.brewery).filter(Boolean))].sort();
+  const prefectures = [...new Set(allNotes.map(n => n.prefecture).filter(Boolean))].sort();
+  const riceVarieties = [...new Set(allNotes.map(n => n.rice_variety).filter(Boolean))].sort();
+  const issues = [...new Set(allNotes.map(n => n.issue).filter(v => v !== undefined && v !== null))].sort((a,b) => a - b);
+
+  const populateSelect = (id, values) => {
+    const select = document.getElementById(id);
+    values.forEach(v => {
+      const opt = document.createElement('option');
+      opt.value = v;
+      opt.textContent = v;
+      select.appendChild(opt);
+    });
+  };
+  populateSelect('filter-classification', classifications);
+  populateSelect('filter-brewery', breweries);
+  populateSelect('filter-prefecture', prefectures);
+  populateSelect('filter-rice', riceVarieties);
+  populateSelect('filter-issue', issues);
+
+  // ---------- Slider display updates ----------
+  const smvMin = document.getElementById('filter-smv-min');
+  const smvMax = document.getElementById('filter-smv-max');
+  const smvMinVal = document.getElementById('smv-min-val');
+  const smvMaxVal = document.getElementById('smv-max-val');
+  smvMin.addEventListener('input', () => smvMinVal.textContent = smvMin.value);
+  smvMax.addEventListener('input', () => smvMaxVal.textContent = smvMax.value);
+
+  const acidityMin = document.getElementById('filter-acidity-min');
+  const acidityMax = document.getElementById('filter-acidity-max');
+  const acidityMinVal = document.getElementById('acidity-min-val');
+  const acidityMaxVal = document.getElementById('acidity-max-val');
+  acidityMin.addEventListener('input', () => acidityMinVal.textContent = acidityMin.value);
+  acidityMax.addEventListener('input', () => acidityMaxVal.textContent = acidityMax.value);
+
+  const abvMin = document.getElementById('filter-abv-min');
+  const abvMax = document.getElementById('filter-abv-max');
+  const abvMinVal = document.getElementById('abv-min-val');
+  const abvMaxVal = document.getElementById('abv-max-val');
+  abvMin.addEventListener('input', () => abvMinVal.textContent = abvMin.value);
+  abvMax.addEventListener('input', () => abvMaxVal.textContent = abvMax.value);
+
+  // ---------- Filter function ----------
+  const filterNotes = () => {
+    const classification = document.getElementById('filter-classification').value;
+    const brewery = document.getElementById('filter-brewery').value;
+    const prefecture = document.getElementById('filter-prefecture').value;
+    const rice = document.getElementById('filter-rice').value;
+    const seimaibuaiRange = document.getElementById('filter-seimaibuai').value;
+    const smvMinVal = parseFloat(smvMin.value);
+    const smvMaxVal = parseFloat(smvMax.value);
+    const acidityMinVal = parseFloat(acidityMin.value);
+    const acidityMaxVal = parseFloat(acidityMax.value);
+    const abvMinVal = parseFloat(abvMin.value);
+    const abvMaxVal = parseFloat(abvMax.value);
+    const issue = document.getElementById('filter-issue').value;
+
+    return allNotes.filter(note => {
+      if (classification && note.classification !== classification) return false;
+      if (brewery && note.brewery !== brewery) return false;
+      if (prefecture && note.prefecture !== prefecture) return false;
+      if (rice && note.rice_variety !== rice) return false;
+
+      if (seimaibuaiRange) {
+        const val = parseSeimaibuai(note.seimaibuai);
+        if (val === null) return false;
+        if (seimaibuaiRange === '<50' && val >= 50) return false;
+        if (seimaibuaiRange === '50-60' && (val < 50 || val > 60)) return false;
+        if (seimaibuaiRange === '61-70' && (val < 61 || val > 70)) return false;
+        if (seimaibuaiRange === '>70' && val <= 70) return false;
+      }
+
+      const smv = parseSMV(note.nihonshu_do);
+      if (smv !== null) {
+        if (smv < smvMinVal || smv > smvMaxVal) return false;
+      } else {
+        if (smvMinVal > -15 || smvMaxVal < 15) return false;
+      }
+
+      const acidity = note.acidity !== undefined ? Number(note.acidity) : null;
+      if (acidity !== null) {
+        if (acidity < acidityMinVal || acidity > acidityMaxVal) return false;
+      } else {
+        if (acidityMinVal > 0 || acidityMaxVal < 100) return false;
+      }
+
+      const abv = parseABV(note.alcohol);
+      if (abv !== null) {
+        if (abv < abvMinVal || abv > abvMaxVal) return false;
+      } else {
+        if (abvMinVal > 0 || abvMaxVal < 25) return false;
+      }
+
+      if (issue && note.issue != issue) return false;
+
+      return true;
+    });
+  };
+
+  // ---------- Render list and feature ----------
+  const renderList = (filtered) => {
+    const listEl = document.getElementById('results-list');
+    const countSpan = document.getElementById('result-count');
+    countSpan.textContent = filtered.length;
+
+    if (filtered.length === 0) {
+      listEl.innerHTML = '<div class="no-results">No tasting notes match your filters.</div>';
+      document.getElementById('feature-title').textContent = 'No selection';
+      document.getElementById('feature-sub').textContent = '';
+      document.getElementById('feature-detail').textContent = '';
+      document.getElementById('feature-img').style.backgroundImage = '';
+      return;
+    }
+
+    // Build list HTML
+    let html = '';
+    filtered.forEach((note, idx) => {
+      html += `
+        <div class="result-item" data-slug="${note.slug}">
+          <div class="item-num">${(idx+1).toString().padStart(2,'0')}</div>
+          <div class="item-content">
+            <div class="item-title">${note.sake_name_jp || note.title_jp || ''}</div>
+            <div class="item-sub">${note.sake_name_en || note.title_en || ''}</div>
+            <div class="item-meta">
+              <span>${note.prefecture || '—'}</span>
+              <span>${note.classification || '—'}</span>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+    listEl.innerHTML = html;
+
+    // Click handler for list items
+    document.querySelectorAll('.result-item').forEach((item, i) => {
+      item.addEventListener('click', () => {
+        const slug = item.dataset.slug;
+        const note = filtered.find(n => n.slug === slug);
+        if (note) {
+          document.getElementById('feature-title').textContent = note.sake_name_jp || note.title_jp || '';
+          document.getElementById('feature-sub').textContent = note.sake_name_en || note.title_en || '';
+          const detail = `${note.prefecture || ''} | ${note.brewery || ''} | ${note.classification || ''}`;
+          document.getElementById('feature-detail').textContent = detail;
+          const imgSrc = note.image ? `https://raw.githubusercontent.com/${SITE_CONFIG.owner}/${SITE_CONFIG.repo}/${SITE_CONFIG.branch}/${note.image}` : '';
+          if (imgSrc) {
+            document.getElementById('feature-img').style.backgroundImage = `url('${imgSrc}')`;
+          } else {
+            document.getElementById('feature-img').style.backgroundImage = '';
+          }
+        }
+      });
+    });
+
+    // Optionally select first item as default
+    if (filtered.length > 0) {
+      document.querySelector('.result-item').click();
+    }
+  };
+
+  // ---------- Event listeners ----------
+  document.getElementById('apply-filters').addEventListener('click', () => {
+    const filtered = filterNotes();
+    renderList(filtered);
+  });
+
+  document.getElementById('reset-filters').addEventListener('click', () => {
+    document.getElementById('filter-classification').value = '';
+    document.getElementById('filter-brewery').value = '';
+    document.getElementById('filter-prefecture').value = '';
+    document.getElementById('filter-rice').value = '';
+    document.getElementById('filter-seimaibuai').value = '';
+    document.getElementById('filter-issue').value = '';
+    smvMin.value = -15; smvMax.value = 15;
+    acidityMin.value = 0; acidityMax.value = 100;
+    abvMin.value = 0; abvMax.value = 25;
+    smvMinVal.textContent = -15;
+    smvMaxVal.textContent = 15;
+    acidityMinVal.textContent = 0;
+    acidityMaxVal.textContent = 100;
+    abvMinVal.textContent = 0;
+    abvMaxVal.textContent = 25;
+    const filtered = filterNotes();
+    renderList(filtered);
+  });
+
+  // Initial render
+  renderList(allNotes);
+})();
+</script>
+</body>
+</html>
