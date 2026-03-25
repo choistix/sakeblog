@@ -1,5 +1,20 @@
 [
   {
+    "slug": "exploring-yamahai",
+    "type": "index",
+    "issue": 7,
+    "title_jp": "山廃の世界 — 野生の息吹",
+    "title_en": "The rustic, wild cousin of kimoto.",
+    "subtitle": "The rustic, wild cousin of kimoto.",
+    "body": "Yamahai (山廃) is a shortened form of yama-oroshi haishi, a method that skips the labour‑intensive grinding of kimoto but still relies on natural lactic acid. It produces sake with pronounced acidity, gamey notes, and a full‑bodied texture.\n\nOnce seen as difficult to control, yamahai is now celebrated for the complexity it brings to junmai and ginjo styles.",
+    "image": "assets/images/exploring-yamahai-yamahai.jpg",
+    "kanji_bg": "酒",
+    "tags": [
+      "yamahai"
+    ],
+    "date": "2026-03-25T15:21:17.909Z"
+  },
+  {
     "slug": "art-of-kimoto",
     "type": "index",
     "issue": 7,
